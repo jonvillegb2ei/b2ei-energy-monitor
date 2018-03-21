@@ -1,0 +1,93 @@
+// Bootstrap
+//--------------------------------------------------------
+@import '~bootstrap-less/bootstrap/bootstrap';
+@import "~bootstrap-less/bootstrap/mixins";
+@import "~bootstrap-less/bootstrap/variables";
+
+// ICONS
+//--------------------------------------------------------
+@import "~font-awesome/less/font-awesome";
+@import "~ionicons/dist/css/ionicons.css";
+
+@import "~bootstrap-daterangepicker/daterangepicker.css";
+
+// MISC
+//--------------------------------------------------------
+@import "~admin-lte/build/less/core";
+@import "~admin-lte/build/less/variables";
+@import "~admin-lte/build/less/mixins";
+
+// COMPONENTS
+//--------------------------------------------------------
+@import "~admin-lte/build/less/header";
+@import "~admin-lte/build/less/sidebar";
+@import "~admin-lte/build/less/sidebar-mini";
+@import "~admin-lte/build/less/control-sidebar";
+@import "~admin-lte/build/less/dropdown";
+@import "~admin-lte/build/less/forms";
+@import "~admin-lte/build/less/progress-bars";
+@import "~admin-lte/build/less/small-box";
+@import "~admin-lte/build/less/boxes";
+@import "~admin-lte/build/less/info-box";
+@import "~admin-lte/build/less/timeline";
+@import "~admin-lte/build/less/buttons";
+@import "~admin-lte/build/less/callout";
+@import "~admin-lte/build/less/alerts";
+@import "~admin-lte/build/less/navs";
+@import "~admin-lte/build/less/products";
+@import "~admin-lte/build/less/table";
+@import "~admin-lte/build/less/labels";
+@import "~admin-lte/build/less/direct-chat";
+@import "~admin-lte/build/less/users-list";
+@import "~admin-lte/build/less/carousel";
+@import "~admin-lte/build/less/modal";
+@import "~admin-lte/build/less/social-widgets";
+@import "~admin-lte/build/less/treeview";
+
+// Plugins
+
+// Miscellaneous
+//--------------------------------------------------------
+@import "~admin-lte/build/less/miscellaneous";
+@import "~admin-lte/build/less/print";
+
+
+// Variables
+//--------------------------------------------------------
+@import "variables";
+
+// Skin
+//--------------------------------------------------------
+@import "./skins/skin-blue";
+
+/*
+ * Page: Profile
+ * -------------
+ */
+
+.profile-user-img {
+  margin: 0 auto;
+  width: 100px;
+  padding: 3px;
+  border: 3px solid @gray-lte;
+}
+
+.profile-username {
+  font-size: 21px;
+  margin-top: 5px;
+}
+
+.post {
+  border-bottom: 1px solid @gray-lte;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  color: #666;
+  &:last-of-type {
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .user-block {
+    margin-bottom: 15px;
+  }
+}

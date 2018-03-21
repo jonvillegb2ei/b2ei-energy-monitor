@@ -1,0 +1,68 @@
+// Bootstrap
+//--------------------------------------------------------
+@import '~bootstrap-less/bootstrap/bootstrap';
+@import "~bootstrap-less/bootstrap/mixins";
+@import "~bootstrap-less/bootstrap/variables";
+
+// MISC
+//--------------------------------------------------------
+@import "~admin-lte/build/less/core";
+@import "~admin-lte/build/less/variables";
+@import "~admin-lte/build/less/mixins";
+
+// Variables
+//--------------------------------------------------------
+@import "variables";
+
+// Form
+//--------------------------------------------------------
+@import "~admin-lte/build/less/forms";
+
+
+@import "~icheck/skins/square/blue.css";
+
+
+/*
+ * Login
+ * ----------------------
+ */
+.login-logo {
+  font-size: 35px;
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 300;
+  a {
+    color: #444;
+  }
+}
+
+.login-page {
+  background: @gray-lte;
+}
+
+.login-box {
+  width: 360px;
+  margin: 7% auto;
+  @media (max-width: @screen-sm) {
+    width: 90%;
+    margin-top: 20px;
+  }
+}
+
+.login-box-body {
+  background: #fff;
+  padding: 20px;
+  border-top: 0;
+  color: #666;
+  .form-control-feedback {
+    color: #777;
+  }
+}
+
+.login-box-msg {
+  margin: 0;
+  text-align: center;
+  padding: 0 20px 20px 20px;
+}
+
+

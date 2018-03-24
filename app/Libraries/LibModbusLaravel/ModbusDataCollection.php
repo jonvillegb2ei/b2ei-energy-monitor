@@ -23,11 +23,11 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
     const BIT_32 = 4;
     const BIT_64 = 8;
 
-    protected $endianness = false;
+    protected $endianness = true;
 
     private function getBytes(int $offset = 0, int $length = 1)
     {
-        $offset = ($offset * 2) - $length;
+        $offset = ($offset * 2);
         if ($offset + $length > $this->count())
             throw new InvalidDataLength();
         return self::applyEndianness($this->slice($offset, $length)->values(), $this->endianness);
@@ -173,17 +173,13 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
      */
     public function readBitmap(int $offset = 0, int $length = 1, int $bit = null) : array
     {
-        if ($offset + ($length * 2) > $this->count())
+        if ($offset + $length > $this->count())
             throw new InvalidDataLength();
-//        $data = $this->getBytes($offset, $length*2);
         $return = collect([]);
-
         for($i=0;$i<$length;$i++) {
-
             $int = $this->readUint16($offset+$i);
             $return = $return->merge(collect(str_split(decbin($int)))->pad(16, "0"));
         }
-
         return $return->map(function($value) {
             return $value == "1";
         })->all();

@@ -1,4 +1,4 @@
-<div class="box {{$class or ''}}">
+<div class="box {{$class or ''}}" @isset($controller)ng-controller="{{$controller}}"@endisset ng-cloak>
     <div class="box-header {{$header_class or 'with-border'}}">
         @isset($title)
         <h3 class="box-title">{{$title}}</h3>

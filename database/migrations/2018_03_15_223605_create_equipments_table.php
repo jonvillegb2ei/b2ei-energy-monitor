@@ -16,13 +16,13 @@ class CreateEquipmentsTable extends Migration
         Schema::create('equipments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->longText('comment');
+            $table->longText('comment')->nullable();
             $table->string('localisation');
             $table->integer('product_id')->unsigned();
             $table->string('address_ip');
             $table->integer('port')->default(502);
             $table->integer('slave');
-            $table->longText('data');
+            $table->longText('data')->nullable();
             $table->timestamps();
         });
     }

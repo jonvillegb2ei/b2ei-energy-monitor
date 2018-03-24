@@ -53,14 +53,21 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::group(['prefix' => 'technician'], function() {
             Route::get('/', 'TechnicianController@index')->name('technician');
+            Route::get('/applogs', 'TechnicianController@applogs')->name('technician.applogs');
+            Route::get('/syslogs', 'TechnicianController@syslogs')->name('technician.syslogs');
+
+            Route::any('/equipments', 'TechnicianController@equipments')->name('technician.equipments');
+
             Route::post('/ping', 'TechnicianController@ping')->name('technician.ping');
             Route::post('/readRegisters', 'TechnicianController@readRegisters')->name('technician.read-registers');
             Route::post('/identify', 'TechnicianController@identify')->name('technician.identify');
+
             Route::get('/ping/{equipment}', 'TechnicianController@pingEquipment')->name('technician.equipment.ping');
+            Route::get('/test/{equipment}', 'TechnicianController@testEquipment')->name('technician.equipment.test');
+
             Route::get('/remove/{equipment}', 'TechnicianController@remove')->name('technician.equipment.remove');
             Route::post('/add/', 'TechnicianController@addEquipment')->name('technician.equipment.add');
             Route::post('/edit/{equipment}', 'TechnicianController@editEquipment')->name('technician.equipment.edit');
-            Route::get('/test/{equipment}', 'TechnicianController@testEquipment')->name('technician.equipment.test');
             Route::get('/detail/{equipment}', 'TechnicianController@detail')->name('technician.equipment.detail');
         });
 

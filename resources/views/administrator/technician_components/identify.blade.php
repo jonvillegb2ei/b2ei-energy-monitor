@@ -1,45 +1,43 @@
 
-@component('components.panel', ['title' => 'Identifying tool'])
-    @if(session('identify-error'))
-        <div class="alert alert-danger alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h5>{{__(session('identify-error')['message'])}}</h5>
-            <small style="max-height: 200px; overflow-y: scroll">{!!nl2br(e(session('identify-error')['output']))!!}</small>
+@component('components.panel', ['title' => 'Identifying tool', 'controller' => 'IdentifyController'])
+
+
+    @component('components.angular-messages')
+
+    @endcomponent
+
+
+    <div class="form-group" ng-class="messages.errors.address_ip.length > 0 ? 'has-error' : ''">
+        <label for="address_ip">{{__('Address Ip')}}</label>
+        <input type="text" name="address_ip" id="address_ip" class="form-control" ng-model="data.address_ip">
+        <span class="help-block" ng-show="messages.errors.address_ip.length > 0">[{messages.errors.address_ip[0]}]</span>
+    </div>
+    <div class="form-group" ng-class="messages.errors.port.length > 0 ? 'has-error' : ''">
+        <label for="port">{{__('Port')}}</label>
+        <input type="number" min="0" max="65535" name="port" id="port" class="form-control" ng-model="data.port">
+        <span class="help-block" ng-show="messages.errors.port.length > 0">[{messages.errors.port[0]}]</span>
+    </div>
+
+    <div class="form-group" ng-class="messages.errors.slave.length > 0 ? 'has-error' : ''">
+        <label for="slave">{{__('Slave')}}</label>
+        <input type="number" min="0" max="255" name="slave" id="slave" class="form-control" ng-model="data.slave">
+        <span class="help-block" ng-show="messages.errors.slave.length > 0">[{messages.errors.slave[0]}]</span>
+    </div>
+
+    <div class="form-group" ng-class="messages.errors.mei_type.length > 0 ? 'has-error' : ''">
+        <label for="mei_type">{{__('MEI type')}}</label>
+        <input type="number" min="0" max="255" name="mei_type" id="mei_type" class="form-control" ng-model="data.mei_type">
+        <span class="help-block" ng-show="messages.errors.mei_type.length > 0">[{messages.errors.mei_type[0]}]</span>
+    </div>
+
+    <div class="form-group" ng-class="messages.errors.device_id.length > 0 ? 'has-error' : ''">
+        <label for="device_id">Device ID</label>
+        <input type="number" min="0" max="255" name="device_id" id="device_id" class="form-control" ng-model="data.device_id">
+        <span class="help-block" ng-show="messages.errors.device_id.length > 0">[{messages.errors.device_id[0]}]</span>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button ng-click="identify()" class="btn btn-primary pull-right">Identify</button>
         </div>
-    @endif
-    @if(session('identify-success'))
-        <div class="alert alert-success alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h5>{{__(session('identify-success')['message'])}}</h5>
-            <small style="max-height: 200px; overflow-y: scroll">{!!nl2br(e(session('identify-success')['output']))!!}</small>
-        </div>
-    @endif
-    <form action="{{route('technician.identify')}}" method="POST" role="form">
-        @csrf
-        <div class="form-group">
-            <label for="identify_address_ip">Address Ip</label>
-            <input type="text" name="address_ip" id="identify_address_ip" class="form-control" value="{{old('address_ip')}}">
-        </div>
-        <div class="form-group">
-            <label for="identify_port">Port</label>
-            <input type="number" min="0" max="65535" name="port" id="identify_port" class="form-control" value="{{old('port', '502')}}">
-        </div>
-        <div class="form-group">
-            <label for="identify_slave">Slave</label>
-            <input type="number" min="0" max="255" name="slave" id="identify_slave" class="form-control" value="{{old('slave', '1')}}">
-        </div>
-        <div class="form-group">
-            <label for="identify_mei_type">MEI type</label>
-            <input type="number" min="0" max="255" name="mei_type" id="identify_mei_type" class="form-control" value="{{old('mei_type', '14')}}">
-        </div>
-        <div class="form-group">
-            <label for="identify_device_id">Device ID</label>
-            <input type="number" min="0" max="4" name="device_id" id="identify_device_id" class="form-control" value="{{old('device_id', '1')}}">
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <button class="btn btn-primary pull-right">Identify</button>
-            </div>
-        </div>
-    </form>
+    </div>
 @endcomponent

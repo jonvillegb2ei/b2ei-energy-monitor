@@ -19,7 +19,8 @@ class CreateVariablesTable extends Migration
             $table->string('name');
             $table->decimal('value', 16, 4)->default(0);
             $table->string('unite');
-            $table->int('log_expiration')->default(0);
+            $table->integer('log_expiration')->default(0);
+            $table->integer('log_interval')->default(1);
             $table->enum('type', ['boolean', 'float', 'int'])->default('float');
             $table->timestamps();
         });

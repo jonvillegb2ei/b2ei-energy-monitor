@@ -1,29 +1,19 @@
 
-@component('components.panel', ['title' => __('Ping tool')])
-    @if(session('ping-error'))
-        <div class="alert alert-danger alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h5>{{__(session('ping-error')['message'])}}</h5>
-            <small style="max-height: 200px; overflow-y: scroll">{!!nl2br(e(session('ping-error')['output']))!!}</small>
+@component('components.panel', ['title' => __('Ping tool'), 'controller' => 'PingController'])
+
+    @component('components.angular-messages')
+
+    @endcomponent
+
+    <div class="form-group" ng-class="messages.errors.address_ip.length > 0 ? 'has-error' : ''">
+        <label for="address_ip">Address Ip</label>
+        <input type="text" name="address_ip" id="address_ip" class="form-control" ng-model="data.address_ip">
+        <span class="help-block" ng-show="messages.errors.address_ip.length > 0">[{messages.errors.address_ip[0]}]</span>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button ng-click="ping()" class="btn btn-primary pull-right">Ping</button>
         </div>
-    @endif
-    @if(session('ping-success'))
-        <div class="alert alert-success alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h5>{{__(session('ping-success')['message'])}}</h5>
-            <small style="max-height: 200px; overflow-y: scroll">{!!nl2br(e(session('ping-success')['output']))!!}</small>
-        </div>
-    @endif
-    <form action="{{route('technician.ping')}}" method="POST" role="form">
-        @csrf
-        <div class="form-group">
-            <label for="ping_address_ip">Address Ip</label>
-            <input type="text" name="address_ip" id="ping_address_ip" class="form-control" value="{{old('address_ip')}}">
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <button class="btn btn-primary pull-right">Ping</button>
-            </div>
-        </div>
-    </form>
+    </div>
+
 @endcomponent

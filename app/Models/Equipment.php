@@ -63,7 +63,7 @@ class Equipment extends Model
      * @var string
      */
     protected $appends  = [
-        'widgetVariables'
+        'widgetVariables', 'brand', 'reference'
     ];
 
     public function product() {
@@ -165,4 +165,14 @@ class Equipment extends Model
     {
         return 'No test provided for this equipment.';
     }
+
+
+    public function getReferenceAttribute() {
+        return $this->product->reference;
+    }
+
+    public function getBrandAttribute() {
+        return $this->product->brand;
+    }
+
 }

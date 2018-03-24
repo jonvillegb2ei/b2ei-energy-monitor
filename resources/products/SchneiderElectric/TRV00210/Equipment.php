@@ -57,12 +57,12 @@ class Equipment extends EquipmentModel
     public function refresh() {
         $client = new ModbusClient();
         $client->connect($this->address_ip, $this->port);
-        $response = $client -> readHoldingRegisters($this->slave, 12000, 70);
+        $response = $client -> readHoldingRegisters($this->slave, 11999, 70);
         $endianness = false;
         if ($response->success()) {
-            $states = $response->getData()->withEndianness($endianness)->readBitmap(0, ModbusDataCollection::BIT_16);
-            $this->updateVariable('state', $states[0]);
-            $this->updateVariable('fault', $states[1] or $states[2]);
+            $states = $response->getData()->withEndianness($endianness)->readBitmap(1, ModbusDataCollection::BIT_16);
+            $this->updateVariable('state', $states[0] ? 1 : 0);
+            $this->updateVariable('fault', ($states[1] or $states[2]) ? 1 : 0);
             $this->updateVariable('current1', $response->getData()->withEndianness($endianness)->readUint16(16));
             $this->updateVariable('current2', $response->getData()->withEndianness($endianness)->readUint16(17));
             $this->updateVariable('current3', $response->getData()->withEndianness($endianness)->readUint16(18));
@@ -208,13 +208,13 @@ class Equipment extends EquipmentModel
     {
         $client = new ModbusClient();
         $client->connect($this->address_ip, $this->port);
-        $response = $client -> readHoldingRegisters($this->slave, 12000, 70);
+        $response = $client -> readHoldingRegisters($this->slave, 11999, 70);
         $endianness = false;
         if ($response->hasException())
             throw $response->getException();
         if (!$response->success())
             return false;
-        $states = $response->getData()->withEndianness($endianness)->readBitmap(0, ModbusDataCollection::BIT_16);
+        $states = $response->getData()->withEndianness($endianness)->readBitmap(1, ModbusDataCollection::BIT_16);
         $output = sprintf("states: %s %s", $states[0] ? 'ON' : 'OFF', ($states[1] or $states[2]) ? 'FAULT' : 'OK');
         $current = $response->getData()->withEndianness($endianness)->readUint16(16);
         $output .= sprintf("\ncurrent 1: %.2f A", $current);
@@ -264,10 +264,8 @@ class Equipment extends EquipmentModel
         $output .= sprintf("\napparent power L3: %.2f kVA", $power / 10);
         $power = $response->getData()->withEndianness($endianness)->readUint16(49);
         $output .= sprintf("\napparent power total: %.2f kVA", $power / 10);
-
         $power = $response->getData()->withEndianness($endianness)->readInt32(50);
         $output .= sprintf("\nactive energy: %.2f kWh", $power);
-
         $power = $response->getData()->withEndianness($endianness)->readInt32(52);
         $output .= sprintf("\nreactive energy: %.2f kWh", $power);
         $power = $response->getData()->withEndianness($endianness)->readUint32(54);

@@ -13,7 +13,7 @@
         <div class="col-md-3">
             <div class="row">
                 <div class="col-md-12">
-                    @include('administrator.technician_components.create-equipment')
+                    @include('administrator.technician_components.equipment-create')
                 </div>
                 <div class="col-md-12">
                     @include('administrator.technician_components.ping')

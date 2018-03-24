@@ -63,8 +63,8 @@ class Equipment extends EquipmentModel
         $endianness = false;
         if ($response->success()) {
             $states = $response->getData()->withEndianness($endianness)->readBitmap(1, ModbusDataCollection::BIT_16);
-            $this->updateVariable('state', $states[0]);
-            $this->updateVariable('fault', $states[1] or $states[2]);
+            $this->updateVariable('state', $states[0] ? 1 : 0);
+            $this->updateVariable('fault', ($states[1] or $states[2]) ? 1 : 0);
             $this->updateVariable('current1', $response->getData()->withEndianness($endianness)->readFloat32(28));
             $this->updateVariable('current2', $response->getData()->withEndianness($endianness)->readFloat32(30));
             $this->updateVariable('current3', $response->getData()->withEndianness($endianness)->readFloat32(32));

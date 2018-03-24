@@ -7,7 +7,9 @@ Developed by  [B2EI](http://www.b2ei.com) with Laravel, angularjs and some other
 Don't use B2EI energy monitor at the moment, it's a beta version with some bugs, we will correct them as soon as possible.
 
 ### Next steps : 
- - Bug correction and interface finalisation
+ - Bug correction, interface finalisation and tests creation.
+ - Add a charts module to create custom charts with one or many equipments.
+ - Add translation support (All texts are in english, we want to add french, german and spanish support)
  - Support product from XLS (actually product elements are stored on PHP class files, we will create a custom product that load all it parameters from an xls file to provide a simple way to add equipments)
  - Notification support (add toggleable notification on equipment fault)
  - Generate an image for raspberry pi (based on Raspbian).

@@ -6,6 +6,7 @@ use App\Traits\TimestampedModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use App\Contracts\Equipment as EquipmentInterface;
+use Mockery\Exception;
 
 class Equipment extends Model implements EquipmentInterface
 {
@@ -186,7 +187,11 @@ class Equipment extends Model implements EquipmentInterface
     }
 
     public function getPictureUrlAttribute() {
-        return url('/images/product/NSX.png'); // TO DO
+        try {
+            return url('/images/product/NSX.png');
+        } catch(\Exception $error) {
+            return '';
+        }// TO DO
     }
 
 }

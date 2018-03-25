@@ -1,4 +1,4 @@
-angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http', '$timeout', '$window', 'Blob', ($scope, $http, $timeout, $window, Blob) => {
+angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http', '$timeout', '$uibModal', 'FileSaver', 'Blob', ($scope, $http, $timeout, $uibModal, FileSaver, Blob) => {
 
     $scope.equipment_id = 0;
 
@@ -31,26 +31,50 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
         $scope.messages.loading = state;
     };
 
-    $scope.chart = {variables: [], date: {startDate: null, endDate: null}};
+
+    $scope.chart = {variables: [], date: {startDate: new Date(), endDate: new Date()}};
+    $scope.chart.date.startDate.setFullYear( $scope.chart.date.startDate.getFullYear() - 1 );
 
     $scope.init = (id, chart_variables) => {
         $scope.equipment_id = id;
+
         $scope.chart.variables = chart_variables;
+        for (let i = 0; i < $scope.chart.variables.length;i++)
+            $scope.chart.variables[i] = $scope.chart.variables[i] + '';
+
         $scope.loadChart();
     };
 
 
-    $scope.labels = [];
+    $scope.options = {};
     $scope.series = [];
     $scope.chart_data = [];
+
+    $scope.options = {
+        scales: {
+            xAxes: [{
+                type: 'time',
+                time: {
+                    displayFormats: {
+                        quarter: 'MMM YYYY'
+                    }
+                }
+            }]
+        }
+    };
+    // $scope.series = ['Series A', 'Series B', 'Series C', 'Series D'];
 
     $scope.loadChart = () => {
         $scope.setLoading(true);
         $http.post(base_url + '/equipments/chart/' + $scope.equipment_id, $scope.chart).then((response) => {
             $scope.setLoading(false);
-            $scope.labels = response.data.labels;
             $scope.series = response.data.series;
             $scope.chart_data = response.data.chart_data;
+            for(let i = 0; i < $scope.chart_data.length; i++) {
+                for(let j = 0; j < $scope.chart_data[i].length; j++) {
+                    $scope.chart_data[i][j].x = new Date($scope.chart_data[i][j].x);
+                }
+            }
         }, (response) => {
             $scope.setLoading(false);
             if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
@@ -59,5 +83,26 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
     };
 
 
+    $scope.openModal = () => {
+        let modalInstance = $uibModal.open({
+            templateUrl: 'ChartConfigModal.html',
+            controller: 'ChartConfigController',
+            resolve: {
+                chart: () => {
+                    return $scope.chart;
+                }
+            }
+        });
+        modalInstance.result.then((config) => {
+            $scope.chart = config;
+            $scope.loadChart();
+        });
+    };
+
+    $scope.export = () => {
+        document.getElementById("advanced-chart").toBlob((blob) => {
+            FileSaver.saveAs(blob, "chart.png");
+        });
+    };
 }]);
 

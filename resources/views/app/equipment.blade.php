@@ -15,11 +15,7 @@
     @foreach($equipment->getCharts() as $chart)
         {!! $chart['chart']->script() !!}
     @endforeach
-    <script>
-        $(document).ready( () => {
-            $('#exportDateRangePicker').daterangepicker();
-        });
-    </script>
+
 @endsection
 
 @section('content')

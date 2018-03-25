@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/', 'ProfileController@profile')->name('profile');
     });
 
+
     Route::group(['prefix' => 'admin', 'middleware' => 'auth.administrator'], function() {
 
         Route::group(['prefix' => 'settings'], function() {

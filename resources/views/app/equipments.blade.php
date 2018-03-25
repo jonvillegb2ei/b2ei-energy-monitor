@@ -23,7 +23,7 @@
                         </div>
                     </span>
                     <div class="widget-user-image">
-                        <img class="img-circle" src="https://download.schneider-electric.com/files?p_Doc_Ref=PB110409&p_File_Type=rendition_288_png&default_image=DefaultProductImage.png" alt="{{ __('Equipment image') }}">
+                        <img class="img-circle" src="{{$equipment->picture_url}}" alt="{{ __('Equipment image') }}">
                     </div>
                     <h3 class="widget-user-username">{{__($equipment->name)}}</h3>
                     <h5 class="widget-user-desc">{{__($equipment->localisation)}}</h5>

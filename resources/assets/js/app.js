@@ -41,6 +41,13 @@ angular.module('EnergyMonitor', ['angular-loading-bar', 'ngAnimate', 'ui.bootstr
         $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
     }
     ChartJsProvider.setOptions({ colors : [ '#2196F3', '#F44336', '#FFC107','#617881','#238176','#e9c46a','#f4a261','#e76f51'] });
+    ChartJsProvider.$get().Chart.plugins.register({
+        beforeDraw: (c) => {
+            let ctx = c.chart.ctx;
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, c.chart.width, c.chart.height);
+        }
+    });
 
 });
 
@@ -54,6 +61,7 @@ require('./angularjs/Controllers/Technician/EquipmentCreateController.js');
 
 require('./angularjs/Controllers/Equipments/ExportController.js');
 require('./angularjs/Controllers/Equipments/ChartController.js');
+require('./angularjs/Controllers/Equipments/ChartConfigController.js');
 
 
 angular.module('EnergyMonitor').run();

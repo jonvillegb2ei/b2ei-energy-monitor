@@ -22,7 +22,7 @@
                         <h5 class="widget-user-desc">{{$equipment->localisation}}</h5>
                     </div>
                     <div class="widget-user-image">
-                        <img class="img-circle" src="https://download.schneider-electric.com/files?p_Doc_Ref=PB110409&p_File_Type=rendition_288_png&default_image=DefaultProductImage.png" alt="{{__('Equipment picture')}}">
+                        <img class="img-circle" src="{{$equipment->picture_url}}" alt="{{__('Equipment picture')}}">
                     </div>
                     <div class="box-footer no-padding">
                         <ul class="nav nav-stacked">

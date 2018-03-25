@@ -1,15 +1,25 @@
-@component('components.panel', ['class' => 'box-primary'])
+@component('components.modal', ['title' => __('Chart parameters')])
 
-    @slot('title')
-        {{__('Equipment detail')}}
+
+    <div class="form-group">
+        <label for="export_date_rage_picker">{{__('Chart period')}}</label>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input date-range-picker class="form-control date-picker" type="text" ng-model="chart.date" id="export_date_rage_picker">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">{{__('Element to display')}}</label>
+        <select class="form-control" ng-model="chart.variables" multiple>
+            @foreach($equipment->variables as $variable)
+                <option value="{{$variable->id}}">{{$variable->printable_name}}</option>
+            @endforeach
+        </select>
+    </div>
+
+    @slot('footer')
+        <button class="btn btn-default pull-left" ng-click="cancel()">{{__('Cancel')}}</button>
+        <button class="btn btn-primary pull-right" ng-click="validate()">{{__('Load')}}</button>
     @endslot
-
-    <ul class="list-group list-group-unbordered">
-        @foreach($equipment->variables as $variable)
-            <li class="list-group-item" title="{{__("Updated")}} {{__($variable->updated_since)}}">
-                <b>{{__($variable->printable_name)}}</b> <a class="pull-right">{{__($variable->printable_value)}}</a>
-            </li>
-        @endforeach
-    </ul>
 
 @endcomponent

@@ -185,4 +185,8 @@ class Equipment extends Model implements EquipmentInterface
         }
     }
 
+    public function getPictureUrlAttribute() {
+        return url('/images/product/NSX.png'); // TO DO
+    }
+
 }

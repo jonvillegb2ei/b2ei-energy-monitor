@@ -124553,13 +124553,34 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/angularjs/Controllers/Equipments/ChartConfigController.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+angular.module('EnergyMonitor').controller('ChartConfigController', ['$scope', '$uibModalInstance', 'chart', function ($scope, $uibModalInstance, chart) {
+
+    $scope.chart = chart;
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    $scope.validate = function () {
+        $uibModalInstance.close($scope.chart);
+    };
+}]);
+
+/***/ }),
+
 /***/ "./resources/assets/js/angularjs/Controllers/Equipments/ChartController.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http', '$timeout', '$window', 'Blob', function ($scope, $http, $timeout, $window, Blob) {
+angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http', '$timeout', '$uibModal', 'FileSaver', 'Blob', function ($scope, $http, $timeout, $uibModal, FileSaver, Blob) {
 
     $scope.equipment_id = 0;
 
@@ -124592,29 +124613,73 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
         $scope.messages.loading = state;
     };
 
-    $scope.chart = { variables: [], date: { startDate: null, endDate: null } };
+    $scope.chart = { variables: [], date: { startDate: new Date(), endDate: new Date() } };
+    $scope.chart.date.startDate.setFullYear($scope.chart.date.startDate.getFullYear() - 1);
 
     $scope.init = function (id, chart_variables) {
         $scope.equipment_id = id;
+
         $scope.chart.variables = chart_variables;
-        $scope.loadChart();
+        for (var i = 0; i < $scope.chart.variables.length; i++) {
+            $scope.chart.variables[i] = $scope.chart.variables[i] + '';
+        }$scope.loadChart();
     };
 
-    $scope.labels = [];
+    $scope.options = {};
     $scope.series = [];
     $scope.chart_data = [];
+
+    $scope.options = {
+        scales: {
+            xAxes: [{
+                type: 'time',
+                time: {
+                    displayFormats: {
+                        quarter: 'MMM YYYY'
+                    }
+                }
+            }]
+        }
+    };
+    // $scope.series = ['Series A', 'Series B', 'Series C', 'Series D'];
 
     $scope.loadChart = function () {
         $scope.setLoading(true);
         $http.post(base_url + '/equipments/chart/' + $scope.equipment_id, $scope.chart).then(function (response) {
             $scope.setLoading(false);
-            $scope.labels = response.data.labels;
             $scope.series = response.data.series;
             $scope.chart_data = response.data.chart_data;
+            for (var i = 0; i < $scope.chart_data.length; i++) {
+                for (var j = 0; j < $scope.chart_data[i].length; j++) {
+                    $scope.chart_data[i][j].x = new Date($scope.chart_data[i][j].x);
+                }
+            }
         }, function (response) {
             $scope.setLoading(false);
             if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
             if (typeof response.data.errors !== 'undefined') $scope.messages.errors = response.data.errors;
+        });
+    };
+
+    $scope.openModal = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'ChartConfigModal.html',
+            controller: 'ChartConfigController',
+            resolve: {
+                chart: function chart() {
+                    return $scope.chart;
+                }
+            }
+        });
+        modalInstance.result.then(function (config) {
+            $scope.chart = config;
+            $scope.loadChart();
+        });
+    };
+
+    $scope.export = function () {
+        document.getElementById("advanced-chart").toBlob(function (blob) {
+            FileSaver.saveAs(blob, "chart.png");
         });
     };
 }]);
@@ -125179,6 +125244,13 @@ angular.module('EnergyMonitor', ['angular-loading-bar', 'ngAnimate', 'ui.bootstr
         $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
     }
     ChartJsProvider.setOptions({ colors: ['#2196F3', '#F44336', '#FFC107', '#617881', '#238176', '#e9c46a', '#f4a261', '#e76f51'] });
+    ChartJsProvider.$get().Chart.plugins.register({
+        beforeDraw: function beforeDraw(c) {
+            var ctx = c.chart.ctx;
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, c.chart.width, c.chart.height);
+        }
+    });
 });
 
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/ModbusClientController.js");
@@ -125191,6 +125263,7 @@ __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/Equi
 
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ExportController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ChartController.js");
+__webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ChartConfigController.js");
 
 angular.module('EnergyMonitor').run();
 

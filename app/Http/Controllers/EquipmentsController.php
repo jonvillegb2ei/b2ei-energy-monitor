@@ -61,14 +61,39 @@ class EquipmentsController extends Controller
     }
 
     public function chart(EquipmentInterface $equipment, ChartDataRequest $request) {
-        return [
-            'labels' => ["January", "February", "March", "April", "May", "June", "July"],
-            'series' => ['Series A', 'Series B'],
-            'chart_data' => [
-                [65, 59, 80, 81, 56, 55, 40],
-                [28, 48, 40, 19, 86, 27, 90]
-            ]
+
+        $startDate = $request->input('date.startDate', null);
+        if ($startDate) {
+            $startDate = Carbon::parse($startDate);
+            if (!$startDate) $startDate = null;
+        }
+
+        $endDate = $request->input('date.endDate', null);
+        if ($endDate) {
+            $endDate = Carbon::parse($endDate);
+            if (!$endDate) $endDate = null;
+        }
+
+        $return = [
+            'series' => [],
+            'chart_data' => []
         ];
+        $equipment->variables()->whereIn('id', $request->input('variables'))->get()->each(function(Variable $variable) use (&$return, $startDate, $endDate) {
+            $builder = $variable->logs()->orderBy('created_at','ASC');
+            if ($startDate) $builder = $builder->whereDate('created_at', '>=', $startDate);
+            if ($endDate) $builder = $builder->whereDate('created_at', '<=', $endDate);
+            $data = $builder->get()->map(function($log) {
+                return [
+                    'x' => $log->created_at->format("D M d Y H:i:s e O T"),
+                    'y' => $log->value
+                ];
+            });
+            $return['chart_data'][] = $data;
+            $return['series'][] = $variable->printable_name;
+        });
+
+        return $return;
+
     }
 
 }

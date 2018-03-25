@@ -29,8 +29,9 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::group(['prefix' => 'equipments'], function() {
         Route::get('/', 'EquipmentsController@equipments')->name('equipments');
-        Route::get('/{equipment}', 'EquipmentsController@equipment')->name('equipment');
-        Route::post('/{equipment}/export', 'EquipmentsController@export')->name('equipment.export');
+        Route::get('/detail/{equipment}', 'EquipmentsController@equipment')->name('equipment');
+        Route::post('/export/{equipment}', 'EquipmentsController@export')->name('equipment.export');
+        Route::post('/chart/{equipment}', 'EquipmentsController@chart')->name('equipment.chart');
     });
 
     Route::group(['prefix' => 'profile'], function() {

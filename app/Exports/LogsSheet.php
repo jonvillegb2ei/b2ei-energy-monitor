@@ -24,7 +24,10 @@ class LogsSheet implements FromCollection, WithTitle, WithMapping, WithHeadings
 
     public function collection()
     {
-        return $this->variable->logs()->orderBy('created_at','ASC')->get();
+        $builder = $this->variable->logs()->orderBy('created_at','ASC');
+        if ($this->start) $builder = $builder->whereDate('created_at', '>=', $this->start);
+        if ($this->end) $builder = $builder->whereDate('created_at', '<=', $this->end);
+        return $builder->get();
     }
 
     /**

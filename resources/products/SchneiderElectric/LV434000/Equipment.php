@@ -13,8 +13,9 @@ use App\Libraries\LibModbusLaravel\TcpIp\ModbusClient;
 use App\Models\Equipment as EquipmentModel;
 use Carbon\Carbon;
 use ConsoleTVs\Charts\Facades\Charts;
+use App\Contracts\Equipment as EquipmentInterface;
 
-class Equipment extends EquipmentModel
+class Equipment extends EquipmentModel implements EquipmentInterface
 {
 
     private $charts = null;

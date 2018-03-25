@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Equipments;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,8 +26,8 @@ class LogsExportRequest extends FormRequest
         return [
             'variables' => 'required|array|min:1',
             'variables.*' => 'exists:variables,id',
-            'start' => 'nullable|string|min:0|max:150',
-            'end' => 'nullable|string|min:0|max:150',
+            'date.startDate' => 'nullable|string|min:0|max:150',
+            'date.endDate' => 'nullable|string|min:0|max:150',
         ];
     }
 }

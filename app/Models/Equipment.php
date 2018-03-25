@@ -5,8 +5,9 @@ namespace App\Models;
 use App\Traits\TimestampedModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use App\Contracts\Equipment as EquipmentInterface;
 
-class Equipment extends Model
+class Equipment extends Model implements EquipmentInterface
 {
     use TimestampedModel;
 
@@ -73,6 +74,7 @@ class Equipment extends Model
     public function variables() {
         return $this->hasMany(Variable::class);
     }
+
 
     public function newFromBuilder($attributes = array(), $connection = null)
     {
@@ -168,11 +170,19 @@ class Equipment extends Model
 
 
     public function getReferenceAttribute() {
-        return $this->product->reference;
+        try {
+            return $this->product->reference;
+        } catch(\Exception $error) {
+            return '';
+        }
     }
 
     public function getBrandAttribute() {
-        return $this->product->brand;
+        try {
+            return $this->product->brand;
+        } catch(\Exception $error) {
+            return '';
+        }
     }
 
 }

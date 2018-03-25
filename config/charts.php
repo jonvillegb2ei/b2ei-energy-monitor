@@ -82,36 +82,36 @@ return [
 
         'canvas-gauges' => [
             'scripts' => [
-                'https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.2/all/gauge.min.js',
+                url('/js/chart-vendor/gauge.min.js'),
             ],
         ],
 
         'chartist' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/chartist/0.10.1/chartist.min.js',
+                url('/js/chart-vendor/chartist.min.js'),
             ],
             'styles' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/chartist/0.10.1/chartist.min.css',
+                url('/css/chart-vendor/chartist.min.css'),
             ],
         ],
 
         'chartjs' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js',
+                url('/js/chart-vendor/Chart.min.js'),
             ],
         ],
 
         'fusioncharts' => [
             'scripts' => [
-                'https://static.fusioncharts.com/code/latest/fusioncharts.js',
-                'https://static.fusioncharts.com/code/latest/themes/fusioncharts.theme.fint.js',
+                url('/js/chart-vendor/fusioncharts.js'),
+                url('/js/chart-vendor/fusioncharts.theme.fint.js'),
             ],
         ],
 
         'google' => [
             'scripts' => [
-                'https://www.google.com/jsapi',
-                'https://www.gstatic.com/charts/loader.js',
+                url('vendor/google/jsapi'),
+                url('vendor/google/loader.js'),
                 "google.charts.load('current', {'packages':['corechart', 'gauge', 'geochart', 'bar', 'line']})",
             ],
         ],
@@ -122,72 +122,72 @@ return [
                 // 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.7/css/highcharts.css',
             ],
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.7/highcharts.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.7/js/modules/offline-exporting.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/highmaps/5.0.7/js/modules/map.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/highmaps/5.0.7/js/modules/data.js',
-                'https://code.highcharts.com/mapdata/custom/world.js',
+                url('/js/chart-vendor/highcharts.js'),
+                url('/js/chart-vendor/offline-exporting.js'),
+                url('/js/chart-vendor/map.js'),
+                url('/js/chart-vendor/data.js'),
+                url('/js/chart-vendor/world.js'),
             ],
         ],
 
         'justgage' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.6/raphael.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.2/justgage.min.js',
+                url('vendor/justgage/raphael.min.js'),
+                url('vendor/justgage/justgage.min.js'),
             ],
         ],
 
         'morris' => [
             'styles' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css',
+                url('vendor/morris/morris.css'),
             ],
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.6/raphael.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js',
+                url('vendor/morris/raphael.min.js'),
+                url('vendor/morris/morris.min.js'),
             ],
         ],
 
         'plottablejs' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/plottable.js/2.8.0/plottable.min.js',
+                url('vendor/progressbarjs/d3.min.js'),
+                url('vendor/progressbarjs/plottable.min.js'),
             ],
             'styles' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/plottable.js/2.2.0/plottable.css',
+                url('vendor/progressbarjs/plottable.css'),
             ],
         ],
 
         'progressbarjs' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js',
+                url('vendor/progressbarjs/progressbar.min.js'),
             ],
         ],
 
         'c3' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js',
+                url('vendor/c3/d3.min.js'),
+                url('vendor/c3/c3.min.js'),
             ],
             'styles' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css',
+                url('vendor/c3/c3.min.css'),
             ],
         ],
 
         'echarts' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/echarts/3.6.2/echarts.min.js',
+                url('vendor/echarts.min.js'),
             ],
         ],
 
         'amcharts' => [
             'scripts' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/amcharts.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/serial.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/plugins/export/export.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/themes/light.js',
+                url('vendor/amcharts/amcharts.js'),
+                url('vendor/amcharts/serial.js'),
+                url('vendor/amcharts/plugins/export/export.min.js'),
+                url('vendor/amcharts/themes/light.js'),
             ],
             'styles' => [
-                'https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.21.2/plugins/export/export.css',
+                url('vendor/amcharts/plugins/export/export.css'),
             ],
         ],
     ],

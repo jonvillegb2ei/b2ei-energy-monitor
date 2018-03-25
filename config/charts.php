@@ -82,36 +82,36 @@ return [
 
         'canvas-gauges' => [
             'scripts' => [
-                @url('/js/chart-vendor/gauge.min.js'),
+                '//js/chart-vendor/gauge.min.js',
             ],
         ],
 
         'chartist' => [
             'scripts' => [
-                @url('/js/chart-vendor/chartist.min.js'),
+                '//js/chart-vendor/chartist.min.js',
             ],
             'styles' => [
-                @url('/css/chart-vendor/chartist.min.css'),
+                '//css/chart-vendor/chartist.min.css',
             ],
         ],
 
         'chartjs' => [
             'scripts' => [
-                @url('/js/chart-vendor/Chart.min.js'),
+                '//js/chart-vendor/Chart.min.js',
             ],
         ],
 
         'fusioncharts' => [
             'scripts' => [
-                @url('/js/chart-vendor/fusioncharts.js'),
-                @url('/js/chart-vendor/fusioncharts.theme.fint.js'),
+                '//js/chart-vendor/fusioncharts.js',
+                '//js/chart-vendor/fusioncharts.theme.fint.js',
             ],
         ],
 
         'google' => [
             'scripts' => [
-                @url('vendor/google/jsapi'),
-                @url('vendor/google/loader.js'),
+                '/vendor/google/jsapi',
+                '/vendor/google/loader.js',
                 "google.charts.load('current', {'packages':['corechart', 'gauge', 'geochart', 'bar', 'line']})",
             ],
         ],
@@ -122,72 +122,72 @@ return [
                 // 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.7/css/highcharts.css',
             ],
             'scripts' => [
-                @url('/js/chart-vendor/highcharts.js'),
-                @url('/js/chart-vendor/offline-exporting.js'),
-                @url('/js/chart-vendor/map.js'),
-                @url('/js/chart-vendor/data.js'),
-                @url('/js/chart-vendor/world.js'),
+                '//js/chart-vendor/highcharts.js',
+                '//js/chart-vendor/offline-exporting.js',
+                '//js/chart-vendor/map.js',
+                '//js/chart-vendor/data.js',
+                '//js/chart-vendor/world.js',
             ],
         ],
 
         'justgage' => [
             'scripts' => [
-                @url('vendor/justgage/raphael.min.js'),
-                @url('vendor/justgage/justgage.min.js'),
+                '/vendor/justgage/raphael.min.js',
+                '/vendor/justgage/justgage.min.js',
             ],
         ],
 
         'morris' => [
             'styles' => [
-                @url('vendor/morris/morris.css'),
+                '/vendor/morris/morris.css',
             ],
             'scripts' => [
-                @url('vendor/morris/raphael.min.js'),
-                @url('vendor/morris/morris.min.js'),
+                '/vendor/morris/raphael.min.js',
+                '/vendor/morris/morris.min.js',
             ],
         ],
 
         'plottablejs' => [
             'scripts' => [
-                @url('vendor/progressbarjs/d3.min.js'),
-                @url('vendor/progressbarjs/plottable.min.js'),
+                '/vendor/progressbarjs/d3.min.js',
+                '/vendor/progressbarjs/plottable.min.js',
             ],
             'styles' => [
-                @url('vendor/progressbarjs/plottable.css'),
+                '/vendor/progressbarjs/plottable.css',
             ],
         ],
 
         'progressbarjs' => [
             'scripts' => [
-                @url('vendor/progressbarjs/progressbar.min.js'),
+                '/vendor/progressbarjs/progressbar.min.js',
             ],
         ],
 
         'c3' => [
             'scripts' => [
-                @url('vendor/c3/d3.min.js'),
-                @url('vendor/c3/c3.min.js'),
+                '/vendor/c3/d3.min.js',
+                '/vendor/c3/c3.min.js',
             ],
             'styles' => [
-                @url('vendor/c3/c3.min.css'),
+                '/vendor/c3/c3.min.css',
             ],
         ],
 
         'echarts' => [
             'scripts' => [
-                @url('vendor/echarts.min.js'),
+                '/vendor/echarts.min.js',
             ],
         ],
 
         'amcharts' => [
             'scripts' => [
-                @url('vendor/amcharts/amcharts.js'),
-                @url('vendor/amcharts/serial.js'),
-                @url('vendor/amcharts/plugins/export/export.min.js'),
-                @url('vendor/amcharts/themes/light.js'),
+                '/vendor/amcharts/amcharts.js',
+                '/vendor/amcharts/serial.js',
+                '/vendor/amcharts/plugins/export/export.min.js',
+                '/vendor/amcharts/themes/light.js',
             ],
             'styles' => [
-                @url('vendor/amcharts/plugins/export/export.css'),
+                '/vendor/amcharts/plugins/export/export.css',
             ],
         ],
     ],

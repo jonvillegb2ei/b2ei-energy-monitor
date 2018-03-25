@@ -51,6 +51,11 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
     $scope.chart_data = [];
 
     $scope.options = {
+        responsive: true,
+        legend: {
+            display: true,
+            position: 'top'
+        },
         scales: {
             xAxes: [{
                 type: 'time',
@@ -62,7 +67,7 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
             }]
         }
     };
-    // $scope.series = ['Series A', 'Series B', 'Series C', 'Series D'];
+    $scope.series = ['a'];
 
     $scope.loadChart = () => {
         $scope.setLoading(true);

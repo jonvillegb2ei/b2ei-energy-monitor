@@ -82,29 +82,29 @@ return [
 
         'canvas-gauges' => [
             'scripts' => [
-                '//js/chart-vendor/gauge.min.js',
+                '/js/chart-vendor/gauge.min.js',
             ],
         ],
 
         'chartist' => [
             'scripts' => [
-                '//js/chart-vendor/chartist.min.js',
+                '/js/chart-vendor/chartist.min.js',
             ],
             'styles' => [
-                '//css/chart-vendor/chartist.min.css',
+                '/css/chart-vendor/chartist.min.css',
             ],
         ],
 
         'chartjs' => [
             'scripts' => [
-                '//js/chart-vendor/Chart.min.js',
+                '/js/chart-vendor/Chart.min.js',
             ],
         ],
 
         'fusioncharts' => [
             'scripts' => [
-                '//js/chart-vendor/fusioncharts.js',
-                '//js/chart-vendor/fusioncharts.theme.fint.js',
+                '/js/chart-vendor/fusioncharts.js',
+                '/js/chart-vendor/fusioncharts.theme.fint.js',
             ],
         ],
 
@@ -122,11 +122,11 @@ return [
                 // 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/5.0.7/css/highcharts.css',
             ],
             'scripts' => [
-                '//js/chart-vendor/highcharts.js',
-                '//js/chart-vendor/offline-exporting.js',
-                '//js/chart-vendor/map.js',
-                '//js/chart-vendor/data.js',
-                '//js/chart-vendor/world.js',
+                '/js/chart-vendor/highcharts.js',
+                '/js/chart-vendor/offline-exporting.js',
+                '/js/chart-vendor/map.js',
+                '/js/chart-vendor/data.js',
+                '/js/chart-vendor/world.js',
             ],
         ],
 

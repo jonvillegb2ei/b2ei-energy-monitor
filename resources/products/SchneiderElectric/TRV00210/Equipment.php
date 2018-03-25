@@ -26,7 +26,7 @@ class Equipment extends EquipmentModel implements EquipmentInterface
         $longLogDuration = 60*60*24*365*5;
         $shortLogDuration = 60*60*24*7;
         $this->createVariable('state', 'ON/OFF', $longLogDuration, 'boolean');
-        $this->createVariable('fault', 'OK/FAULT', $longLogDuration, 'boolean');
+        $this->createVariable('fault', 'FAULT/OK', $longLogDuration, 'boolean');
         $this->createVariable('current1', 'A', $shortLogDuration);
         $this->createVariable('current2', 'A', $shortLogDuration);
         $this->createVariable('current3', 'A', $shortLogDuration);

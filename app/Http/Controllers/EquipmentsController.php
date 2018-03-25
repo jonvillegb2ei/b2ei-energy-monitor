@@ -40,6 +40,10 @@ class EquipmentsController extends Controller
 
     public function export(LogsExportRequest $request)
     {
+        try {
+            set_time_limit(0);
+            ini_set('max_execution_time', 0);
+        } catch(\Exception $error) { }
         $startDate = $request->input('date.startDate', null);
         if ($startDate) {
             $startDate = Carbon::parse($startDate);

@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">{{__('Element to export')}}</label>
-        <select class="form-control" ng-model="data.variables" multiple>
+        <select class="form-control" ng-model="data.variables" style="height: 335px" multiple>
             @foreach($equipment->variables as $variable)
                 <option value="{{$variable->id}}">{{$variable->printable_name}}</option>
             @endforeach

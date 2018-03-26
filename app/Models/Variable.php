@@ -34,7 +34,7 @@ class Variable extends Model
      * @var array
      */
     protected $fillable = [
-        'equipment_id', 'name', 'value', 'unite', 'type', 'log_expiration'
+        'equipment_id', 'name', 'value', 'unit', 'type', 'log_expiration', 'log_interval'
     ];
 
     /**
@@ -72,16 +72,16 @@ class Variable extends Model
     }
 
     public function getPrintableValueAttribute() {
-        if ($this->type == 'float') return round($this->value, 2).' '.$this->unite;
-        else if ($this->type == 'int') return (int)$this->value.' '.$this->unite;
+        if ($this->type == 'float') return round($this->value, 2).' '.$this->unit;
+        else if ($this->type == 'int') return (int)$this->value.' '.$this->unit;
         else if ($this->type == 'boolean') {
-            if (str_contains($this->unite, '|'))
-                [$true, $false] = explode('|',$this->unite);
-            else if (str_contains($this->unite, '/'))
-                [$true, $false] = explode('/',$this->unite);
+            if (str_contains($this->unit, '|'))
+                [$true, $false] = explode('|',$this->unit);
+            else if (str_contains($this->unit, '/'))
+                [$true, $false] = explode('/',$this->unit);
             else [$true, $false] = ['true', 'false'];
             return (int)$this->value === 1 ? $true : $false;
-        } else return $this->value.' '.$this->unite;
+        } else return $this->value.' '.$this->unit;
     }
 
 }

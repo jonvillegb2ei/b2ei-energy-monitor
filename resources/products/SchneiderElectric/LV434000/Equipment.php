@@ -22,36 +22,41 @@ class Equipment extends EquipmentModel implements EquipmentInterface
 
     public function createVariables ()
     {
-        $longLogDuration = 60*60*24*365*5;
-        $shortLogDuration = 60*60*24*7;
-        $this->createVariable('state', 'ON/OFF', $longLogDuration, 'boolean');
-        $this->createVariable('fault', 'FAULT/OK', $longLogDuration, 'boolean');
-        $this->createVariable('current1', 'A', $shortLogDuration);
-        $this->createVariable('current2', 'A', $shortLogDuration);
-        $this->createVariable('current3', 'A', $shortLogDuration);
-        $this->createVariable('currentN', 'A', $shortLogDuration);
-        $this->createVariable('voltage12', 'V', $shortLogDuration);
-        $this->createVariable('voltage23', 'V', $shortLogDuration);
-        $this->createVariable('voltage31', 'V', $shortLogDuration);
-        $this->createVariable('voltage1N', 'V', $shortLogDuration);
-        $this->createVariable('voltage2N', 'V', $shortLogDuration);
-        $this->createVariable('voltage3N', 'V', $shortLogDuration);
-        $this->createVariable('frequency', 'Hz', $shortLogDuration);
-        $this->createVariable('active_power1', 'kW', $longLogDuration);
-        $this->createVariable('active_power2', 'kW', $longLogDuration);
-        $this->createVariable('active_power3', 'kW', $longLogDuration);
-        $this->createVariable('active_power', 'kW', $longLogDuration);
-        $this->createVariable('reactive_power', 'kVAR', $longLogDuration);
-        $this->createVariable('reactive_power1', 'kVAR', $longLogDuration);
-        $this->createVariable('reactive_power2', 'kVAR', $longLogDuration);
-        $this->createVariable('reactive_power3', 'kVAR', $longLogDuration);
-        $this->createVariable('apparent_power', 'kVA', $longLogDuration);
-        $this->createVariable('apparent_power1', 'kVA', $longLogDuration);
-        $this->createVariable('apparent_power2', 'kVA', $longLogDuration);
-        $this->createVariable('apparent_power3', 'kVA', $longLogDuration);
-        $this->createVariable('active_energy', 'kWh', $longLogDuration);
-        $this->createVariable('reactive_energy', 'kVARh', $longLogDuration);
-        $this->createVariable('apparent_energy', 'kVAh', $longLogDuration);
+
+        $fiveYears = 60*24*365*5;
+        $oneYear = 60*24*365;
+        $fiftyMinutes = 15;
+        $fiveMinute = 5;
+
+
+        $this->createVariable('state', 'ON/OFF', $fiftyMinutes, $fiveYears, 'boolean');
+        $this->createVariable('fault', 'FAULT/OK', $fiftyMinutes, $fiveYears, 'boolean');
+        $this->createVariable('current1', 'A', $fiveMinute, $oneYear);
+        $this->createVariable('current2', 'A', $fiveMinute, $oneYear);
+        $this->createVariable('current3', 'A', $fiveMinute, $oneYear);
+        $this->createVariable('currentN', 'A', $fiveMinute, $oneYear);
+        $this->createVariable('voltage12', 'V', $fiveMinute, $oneYear);
+        $this->createVariable('voltage23', 'V', $fiveMinute, $oneYear);
+        $this->createVariable('voltage31', 'V', $fiveMinute, $oneYear);
+        $this->createVariable('voltage1N', 'V', $fiveMinute, $oneYear);
+        $this->createVariable('voltage2N', 'V', $fiveMinute, $oneYear);
+        $this->createVariable('voltage3N', 'V', $fiveMinute, $oneYear);
+        $this->createVariable('frequency', 'Hz', $fiveMinute, $oneYear);
+        $this->createVariable('active_power1', 'kW', $fiftyMinutes, $fiveYears);
+        $this->createVariable('active_power2', 'kW', $fiftyMinutes, $fiveYears);
+        $this->createVariable('active_power3', 'kW', $fiftyMinutes, $fiveYears);
+        $this->createVariable('active_power', 'kW', $fiftyMinutes, $fiveYears);
+        $this->createVariable('reactive_power', 'kVAR', $fiftyMinutes, $fiveYears);
+        $this->createVariable('reactive_power1', 'kVAR', $fiftyMinutes, $fiveYears);
+        $this->createVariable('reactive_power2', 'kVAR', $fiftyMinutes, $fiveYears);
+        $this->createVariable('reactive_power3', 'kVAR', $fiftyMinutes, $fiveYears);
+        $this->createVariable('apparent_power', 'kVA', $fiftyMinutes, $fiveYears);
+        $this->createVariable('apparent_power1', 'kVA', $fiftyMinutes, $fiveYears);
+        $this->createVariable('apparent_power2', 'kVA', $fiftyMinutes, $fiveYears);
+        $this->createVariable('apparent_power3', 'kVA', $fiftyMinutes, $fiveYears);
+        $this->createVariable('active_energy', 'kWh', $fiftyMinutes, $fiveYears);
+        $this->createVariable('reactive_energy', 'kVARh', $fiftyMinutes, $fiveYears);
+        $this->createVariable('apparent_energy', 'kVAh', $fiftyMinutes, $fiveYears);
         return true;
     }
 

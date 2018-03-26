@@ -17,7 +17,7 @@ class CreateEquipmentsTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->longText('comment')->nullable();
-            $table->string('localisation');
+            $table->string('localisation')->nullable();
             $table->integer('product_id')->unsigned();
             $table->string('address_ip');
             $table->integer('port')->default(502);

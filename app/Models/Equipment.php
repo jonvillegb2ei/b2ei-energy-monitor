@@ -104,15 +104,16 @@ class Equipment extends Model implements EquipmentInterface
         return collect([]);
     }
 
-    public function createVariable(string $name, string $unite, int $log_expiration, string $type = 'float')
+    public function createVariable(string $name, string $unit, int $log_interval, int $log_expiration, string $type = 'float')
     {
         $variable = Variable::where('equipment_id', $this->id)->where('name', $name)->first();
         if (is_null($variable)) {
             $variable = Variable::create([
                 'equipment_id' => $this->id,
                 'name' => $name,
-                'unite' => $unite,
+                'unit' => $unit,
                 'type' => $type,
+                'log_interval' => $log_interval,
                 'log_expiration' => $log_expiration,
             ]);
         }

@@ -93,6 +93,7 @@ class Equipment extends EquipmentModel implements EquipmentInterface
             $this->updateVariable('apparent_power2', $response->getData()->withEndianness($endianness)->readFloat32(90));
             $this->updateVariable('apparent_power3', $response->getData()->withEndianness($endianness)->readFloat32(92));
             $this->updateVariable('apparent_power', $response->getData()->withEndianness($endianness)->readFloat32(94));
+
             $this->updateVariable('active_energy', $response->getData()->withEndianness($endianness)->readInt64(96));
             $this->updateVariable('reactive_energy', $response->getData()->withEndianness($endianness)->readInt64(100));
             $this->updateVariable('apparent_energy', $response->getData()->withEndianness($endianness)->readInt64(120));

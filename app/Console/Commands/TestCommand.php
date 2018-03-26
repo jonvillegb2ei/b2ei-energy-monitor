@@ -55,7 +55,7 @@ class TestCommand extends Command
 //        $response = $client -> readHoldingRegisters(10, 12000, 64);
         $endianness = false;
 
-        $equipment = Equipment::where('id', 5)->first();
+        $equipment = Equipment::where('id', 1)->first();
 
         dd($equipment->test());
 

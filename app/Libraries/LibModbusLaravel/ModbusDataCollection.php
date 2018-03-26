@@ -35,20 +35,25 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
 
     private static function applyEndianness(Collection $data, bool $endianness)
     {
-        if (!$endianness)
+        if (!$endianness) {
             for($i=0;$i<$data->count();$i+=2) {
                 $tmp = $data[$i];
                 $data[$i] = $data[$i + 1];
                 $data[$i + 1] = $tmp;
             }
+        }
         return $data;
     }
 
     private function combineBytes(Collection $data)
     {
+//        for($i=0;$i<4;$i++) if (!isset($data[$i])) $data[$i] = 0;
+//        return ((0xFF & $data[1]) << 24) | ((0xFF & $data[0]) << 16) | ((0xFF & $data[3]) << 8) | ((0xFF & $data[2]) << 0);
         $return = 0;
-        for($i=0;$i<$data->count();$i++)
-            $return = $return | ($data[$i] & 0xFF)<<($i*8);
+        for($i=0;$i<$data->count();$i+=2) {
+            $return = $return | ((0xFF & $data[$i + 1]) << (8 * ($data->count() - 1 - $i)));
+            $return = $return | ((0xFF & $data[$i]) << (8 * ($data->count() - 2 - $i)));
+        }
         return $return;
     }
 

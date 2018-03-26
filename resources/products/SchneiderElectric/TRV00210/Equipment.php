@@ -216,6 +216,7 @@ class Equipment extends EquipmentModel implements EquipmentInterface
             throw $response->getException();
         if (!$response->success())
             return false;
+        $output = "";
         $states = $response->getData()->withEndianness($endianness)->readBitmap(1, ModbusDataCollection::BIT_16);
         $output = sprintf("states: %s %s", $states[0] ? 'ON' : 'OFF', ($states[1] or $states[2]) ? 'FAULT' : 'OK');
         $current = $response->getData()->withEndianness($endianness)->readUint16(16);
@@ -266,14 +267,19 @@ class Equipment extends EquipmentModel implements EquipmentInterface
         $output .= sprintf("\napparent power L3: %.2f kVA", $power / 10);
         $power = $response->getData()->withEndianness($endianness)->readUint16(49);
         $output .= sprintf("\napparent power total: %.2f kVA", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readInt32(50);
+
+
+        $power = $response->getData()->withEndianness(false)->readInt32(50);
         $output .= sprintf("\nactive energy: %.2f kWh", $power);
+
         $power = $response->getData()->withEndianness($endianness)->readInt32(52);
         $output .= sprintf("\nreactive energy: %.2f kWh", $power);
         $power = $response->getData()->withEndianness($endianness)->readUint32(54);
         $output .= sprintf("\nactive energy counted positively: %.2f kWh", $power);
+
         $power = $response->getData()->withEndianness($endianness)->readUint32(56);
         $output .= sprintf("\nactive energy counted negatively: %.2f kWh", $power);
+
         $power = $response->getData()->withEndianness($endianness)->readUint32(58);
         $output .= sprintf("\nreactive energy counted positively: %.2f kWh", $power);
         $power = $response->getData()->withEndianness($endianness)->readUint32(60);

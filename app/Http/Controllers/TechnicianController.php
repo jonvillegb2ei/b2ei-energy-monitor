@@ -241,7 +241,7 @@ class TechnicianController extends Controller
             $response = $client->readHoldingRegisters($slave, $register, $length);
             if ($response->success()) {
                 for ($i = 0; $i < $length; $i++) {
-                    $value = $response->getData()->withEndianness()->readUint16($i);
+                    $value = $response->getData()->withEndianness(false)->readUint16($i);
                     $registers[$i] = ['index' => $i+1, 'value'=> $value, 'class_name'=> 'has-success'];
                 }
                 return response()->json(['return' => true, 'registers' => $registers, 'message' => 'Device reply with data.', 'output' => 'Data length: ' . ($response->getData()->count() / 2)]);

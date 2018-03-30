@@ -36,8 +36,8 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::group(['prefix' => 'profile'], function() {
         Route::get('/', 'ProfileController@profile')->name('profile');
+        Route::post('/edit', 'ProfileController@edit')->name('profile.edit');
     });
-
 
     Route::group(['prefix' => 'admin', 'middleware' => 'auth.administrator'], function() {
 

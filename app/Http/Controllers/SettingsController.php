@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Settings\SetIpAddressRequest;
 use App\Libraries\SystemUtils;
-use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
 
 class SettingsController extends Controller
@@ -30,7 +29,7 @@ class SettingsController extends Controller
 
         $process = new Process ('ifconfig eth0 | grep -o -E \'([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}\'');
         $process->run();
-        $mac_address = $process->isSuccessful() ? $process->getOutput() : "Unknown";
+        $mac_address = $process->isSuccessful() ? $process->getOutput() : "";
 
         return response()->view('administrator.settings', ['syslogs' => $syslogs, 'applogs' => $applogs, 'dmesg' => $dmesg, 'mac_address' => $mac_address]);
     }

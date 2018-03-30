@@ -14,8 +14,14 @@ use Symfony\Component\Process\Process;
 
 class SystemUtils {
 
+    static public function getBinaryPath()
+    {
+        return realpath(app_path('../systemutils'));
+    }
+
     static public function getConfigContent() {
-        $process = new Process ('sudo /usr/src/b2ei-energy-monitor/systemutils');
+
+        $process = new Process ('sudo '. (self::getBinaryPath()));
         $process->run();
         return $process->isSuccessful() ? $process->getOutput() : '';
     }
@@ -100,7 +106,7 @@ class SystemUtils {
         $dns = implode(' ', $dns);
         $netmask = self::getNetmask($netmask);
         if (!$netmask) $netmask = 24;
-        $command = 'sudo /usr/src/b2ei-energy-monitor/systemutils --static '.escapeshellarg($address_ip.'/'.$netmask).' '.escapeshellarg($gateway).' '.$dns;
+        $command = 'sudo '.(self::getBinaryPath()).' --static '.escapeshellarg($address_ip.'/'.$netmask).' '.escapeshellarg($gateway).' '.$dns;
         $process = new Process ($command);
         $process->run();
         return $process->isSuccessful() ? (bool)stristr($process->getOutput(), "ok") : false;
@@ -110,7 +116,7 @@ class SystemUtils {
 
     static public function setDHCP()
     {
-        $command = 'sudo /usr/src/b2ei-energy-monitor/systemutils --dhcp';
+        $command = 'sudo '.(self::getBinaryPath()).' --dhcp';
         $process = new Process ($command);
         $process->run();
         return $process->isSuccessful() ? (bool)stristr($process->getOutput(), 'ok') : false;
@@ -118,7 +124,7 @@ class SystemUtils {
 
     static public function reboot()
     {
-        $command = 'sudo /usr/src/b2ei-energy-monitor/systemutils --reboot';
+        $command = 'sudo '.(self::getBinaryPath()).' --reboot';
         $process = new Process ($command);
         $process->run();
         return $process->isSuccessful() ? (bool)stristr($process->getOutput(), 'ok') : false;
@@ -126,7 +132,7 @@ class SystemUtils {
 
     static public function shutdown()
     {
-        $command = 'sudo /usr/src/b2ei-energy-monitor/systemutils --shutdown';
+        $command = 'sudo '.(self::getBinaryPath()).' --shutdown';
         $process = new Process ($command);
         $process->run();
         return $process->isSuccessful() ? (bool)stristr($process->getOutput(), 'ok') : false;
@@ -134,7 +140,7 @@ class SystemUtils {
 
     static public function update()
     {
-        $command = 'sudo /usr/src/b2ei-energy-monitor/systemutils --update';
+        $command = 'sudo '.(self::getBinaryPath()).' --update';
         $process = new Process ($command);
         $process->run();
         return $process->isSuccessful() ? (bool)stristr($process->getOutput(), 'ok') : false;

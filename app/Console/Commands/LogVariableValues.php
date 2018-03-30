@@ -37,7 +37,7 @@ class LogVariableValues extends Command
      */
     public function handle()
     {
-        return DB::statement( 'INSERT INTO logs (`id`, `variable_id`, `value`, `created_at`) SELECT NULL, `id`, `value`, NOW() FROM `variables` WHERE `id` NOT IN (SELECT `logs`.`variable_id` FROM `logs` WHERE UNIX_TIMESTAMP(`logs`.`created_at`)  >  (UNIX_TIMESTAMP(NOW()) - (`variables`.`log_interval` * 60)))' ) and
-            DB::statement( 'DELETE `logs` FROM `logs` INNER JOIN `variables` ON `variables`.`id` = `logs`.`variable_id` WHERE `variables`.`log_expiration` > 0 AND UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(`logs`.`created_at`) > `variables`.`log_expiration`' );
+        return DB::statement('INSERT INTO `logs` (`id`, `variable_id`, `value`, `created_at`) SELECT NULL, `id`, `value`, NOW() FROM `variables` WHERE `id` NOT IN (SELECT `logs`.`variable_id` FROM `logs` WHERE UNIX_TIMESTAMP(`logs`.`created_at`)  >  (UNIX_TIMESTAMP(NOW()) - (`variables`.`log_interval` * 60)))') and
+            DB::statement('DELETE `logs` FROM `logs` INNER JOIN `variables` ON `variables`.`id` = `logs`.`variable_id` WHERE `variables`.`log_expiration` > 0 AND UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(`logs`.`created_at`) > `variables`.`log_expiration`');
     }
 }

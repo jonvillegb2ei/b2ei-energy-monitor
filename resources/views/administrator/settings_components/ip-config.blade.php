@@ -42,23 +42,23 @@
 
         <div class="form-group" id="form-address-ip">
             <label for="address_ip">Address Ip</label>
-            <input type="text" name="address_ip" id="address_ip" class="form-control" value="{{$config['type'] == 'static' ? $config['address_ip'] : ''}}">
+            <input type="text" name="address_ip" id="address_ip" class="form-control" placeholder="{{__('Set a valid IPV4 address like 169.254.0.1')}}" value="{{$config['type'] == 'static' ? $config['address_ip'] : ''}}">
         </div>
         <div class="form-group" id="form-net-mask">
             <label for="netmask">Met mask</label>
-            <input type="text" name="netmask" id="netmask" class="form-control" value="{{$config['type'] == 'static' ? $config['netmask'] : ''}}">
+            <input type="text" name="netmask" id="netmask" class="form-control" placeholder="{{__('Set a valid IPV4 netmask like 255.255.0.0')}}" value="{{$config['type'] == 'static' ? $config['netmask'] : ''}}">
         </div>
         <div class="form-group" id="form-gateway">
             <label for="gateway">Gateway</label>
-            <input type="text" name="gateway" id="gateway" class="form-control" value="{{$config['type'] == 'static' ? $config['gateway'] : ''}}">
+            <input type="text" name="gateway" id="gateway" class="form-control" placeholder="{{__('Set a valid IPV4 gateway address like 169.254.0.254')}}" value="{{$config['type'] == 'static' ? $config['gateway'] : ''}}">
         </div>
         <div class="form-group" id="form-dns">
             <label for="dns">DNS</label>
-            <input type="text" name="dns" id="dns" class="form-control" value="{{$config['type'] == 'static' ? $config['dns'] : ''}}">
+            <input type="text" name="dns" id="dns" class="form-control" placeholder="{{__('Set a valid IPV4 DNS server address separated with spaces like 169.254.0.254 8.8.8.8 8.8.4.4')}}" value="{{$config['type'] == 'static' ? $config['dns'] : ''}}">
         </div>
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary pull-right">Change config</button>
+                <button class="btn btn-primary pull-right">{{__('Change config')}}</button>
             </div>
         </div>
     </form>

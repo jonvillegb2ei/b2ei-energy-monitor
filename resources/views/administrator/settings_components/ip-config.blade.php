@@ -26,7 +26,7 @@
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="dhcp-checkbox" onchange="staticIp(false)" id="dhcp-checkbox">
-                    {{__('DHCP')}}&nbsp;&nbsp;({{__('mac address:')}} {{__($mac_address)}})
+                    {{__('DHCP')}}&nbsp;&nbsp;({{__('mac address:')}} {{__(strtoupper($mac_address))}})
                 </label>
             </div>
         </div>

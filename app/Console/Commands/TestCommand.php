@@ -48,14 +48,14 @@ class TestCommand extends Command
 //        }
 //
 //        return null;
-        $client = new ModbusClient();
-        $client->connect('192.168.2.186', 502);
-        $response = $client -> readHoldingRegisters(255, 31999, 124);
+//        $client = new ModbusClient();
+//        $client->connect('192.168.2.186', 502);
+//        $response = $client -> readHoldingRegisters(255, 31999, 124);
 //        $client->connect('192.168.1.64', 502);
 //        $response = $client -> readHoldingRegisters(10, 12000, 64);
-        $endianness = false;
+//        $endianness = false;
 
-        $equipment = Equipment::where('id', 1)->first();
+        $equipment = Equipment::where('id', 5)->first();
 
         dd($equipment->test());
 

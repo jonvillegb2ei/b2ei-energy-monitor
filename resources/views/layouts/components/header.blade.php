@@ -1,11 +1,11 @@
 <header class="main-header">
     <a href="{{route('home')}}" class="logo">
-        <span class="logo-mini"><b>B2EI</b></span>
-        <span class="logo-lg"><b>B2EI</b>&nbsp;<small>Energy monitor</small></span>
+        <span class="logo-mini"><b>{{trans('app.vendor')}}</b></span>
+        <span class="logo-lg"><b>{{trans('app.vendor')}}</b>&nbsp;<small>{{trans('app.name')}}</small></span>
     </a>
     <nav class="navbar navbar-static-top">
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">{{trans('app.toggle-navigation')}}</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>

@@ -1,5 +1,5 @@
 
-@component('components.panel', ['title' => __('Update and system')])
+@component('components.panel', ['title' => trans('settings.system.title')])
     @if(session('system-error'))
         <div class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -19,30 +19,30 @@
         <div class="col-md-6 text-center">
             <form action="{{route('settings.shutdown')}}" method="POST" role="form">
                 @csrf
-                <button type="submit" class="btn btn-default">{{__('Shutdown')}}</button>
+                <button type="submit" class="btn btn-default">{{trans('settings.system.shutdown')}}</button>
             </form>
         </div>
         <div class="col-md-6 text-center">
             <form action="{{route('settings.reboot')}}" method="POST" role="form">
                 @csrf
-                <button type="submit" class="btn btn-default">{{__('Reboot')}}</button>
+                <button type="submit" class="btn btn-default">{{trans('settings.system.reboot')}}</button>
             </form>
         </div>
     </div>
     <div class="row" style="padding-top: 20px; padding-bottom: 10px">
         <div class="col-md-12" style="padding-bottom: 10px">
-            <b>{{__('Application')}}</b>
+            <b>{{trans('settings.system.application')}}</b>
         </div>
         <div class="col-md-6 text-center">
             <form action="{{route('settings.update')}}" method="POST" role="form">
                 @csrf
-                <button type="submit" class="btn btn-primary">{{__('Update application files')}}</button>
+                <button type="submit" class="btn btn-primary">{{trans('settings.system.update')}}</button>
             </form>
         </div>
         <div class="col-md-6 text-center">
             <form action="{{route('settings.reset')}}" method="POST" role="form">
                 @csrf
-                <button type="submit" class="btn btn-warning">{{__('Reset to factory settings')}}</button>
+                <button type="submit" class="btn btn-warning">{{trans('settings.system.reset')}}</button>
             </form>
         </div>
     </div>

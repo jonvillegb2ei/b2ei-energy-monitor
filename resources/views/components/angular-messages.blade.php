@@ -2,7 +2,7 @@
     <div class="col-md-12">
         @if(!isset($loading) or $loading)
         <div class="alert alert-info" ng-show="messages.loading" ng-cloak>
-            <h5><i class="fa fa-spinner fa-pulse"></i>&nbsp;&nbsp;{{__('Loading')}}</h5>
+            <h5><i class="fa fa-spinner fa-pulse"></i>&nbsp;&nbsp;{{trans('app.loading')}}</h5>
         </div>
         @endif
         <div class="alert alert-danger" ng-show="messages.error.length > 0" ng-cloak>

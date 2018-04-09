@@ -1,9 +1,9 @@
 
-@component('components.panel', ['title' => __('Backup')])
+@component('components.panel', ['title' => trans('settings.backup.title')])
     <div class="row">
         <div class="col-md-12">
-            <button style="width: 100%" class="btn btn-primary">{{__('Create and download a backup.*')}}</button>
-            <span class="text-warning pull-right">{{__('*It can take a while.')}}</span>
+            <button style="width: 100%" class="btn btn-primary">{{trans('settings.backup.create-download')}}</button>
+            <span class="text-warning pull-right">{{trans('settings.backup.take-a-while')}}</span>
         </div>
     </div>
 @endcomponent

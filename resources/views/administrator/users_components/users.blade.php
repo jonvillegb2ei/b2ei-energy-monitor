@@ -10,17 +10,17 @@
     @endslot
 
     @slot('title')
-        {{__('User list')}}
+        {{trans('users.table.title')}}
     @endslot
 
     <table class="table table-striped">
         <tbody>
             <tr>
                 <th style="width: 10px">#</th>
-                <th>{{__('Firstname')}}</th>
-                <th>{{__('Lastname')}}</th>
-                <th>{{__('Email')}}</th>
-                <th>{{__('Administrator')}}</th>
+                <th>{{trans('users.table.firstname')}}</th>
+                <th>{{trans('users.table.lastname')}}</th>
+                <th>{{trans('users.table.email')}}</th>
+                <th>{{trans('users.table.administrator')}}</th>
                 <th>&nbsp;</th>
             </tr>
             <tr ng-repeat="user in users">
@@ -29,10 +29,10 @@
                 <td>[{user.lastname}]</td>
                 <td>[{user.email}]</td>
                 <td>[{user.administrator ? 'YES' : 'NO'}]&nbsp;
-                    <a ng-if="{{\Illuminate\Support\Facades\Auth::user()->id}} !== user.id" href="#" ng-click="changeAdministrator(user)">{{__('Change')}}</a>
+                    <a ng-if="{{\Illuminate\Support\Facades\Auth::user()->id}} !== user.id" href="#" ng-click="changeAdministrator(user)">{{trans('users.table.change')}}</a>
                 </td>
                 <td>
-                    <button ng-if="{{\Illuminate\Support\Facades\Auth::user()->id}} !== user.id" ng-click="remove(user)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>&nbsp;{{__('Remove')}}</button>
+                    <button ng-if="{{\Illuminate\Support\Facades\Auth::user()->id}} !== user.id" ng-click="remove(user)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>&nbsp;{{trans('users.table.remove')}}</button>
                 </td>
             </tr>
         </tbody>

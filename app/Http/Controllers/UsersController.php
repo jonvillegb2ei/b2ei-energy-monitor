@@ -6,6 +6,7 @@ use App\Http\Requests\Users\CreateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -21,8 +22,10 @@ class UsersController extends Controller
 
     public function create(CreateUserRequest $request)
     {
+        $password = $request->input('password');
         $user = User::create($request->all());
-        if ($user)
+        $user -> password = Hash::make($password);
+        if ($user->save())
             return redirect()->back()->with('create-success', ['message' => 'User created.']);
         else
             return redirect()->back()->with('create-error', ['message' => 'Error during user creation.']);

@@ -14,7 +14,7 @@ import "angular-animate";
 import "angular-ui-bootstrap";
 import "angular-file-saver";
 
-
+// let angular_ui_bootstrap = require('angular-ui-bootstrap');
 
 
 
@@ -62,9 +62,11 @@ require('./angularjs/Controllers/Technician/EquipmentCreateController.js');
 require('./angularjs/Controllers/Equipments/ExportController.js');
 require('./angularjs/Controllers/Equipments/ChartController.js');
 require('./angularjs/Controllers/Equipments/ChartConfigController.js');
+require('./angularjs/Controllers/Equipments/ChartEquipmentController.js');
+require('./angularjs/Controllers/Equipments/ChartsEquipmentManagerController.js');
+
+require('./angularjs/Directives/ChartEquipment.js');
 
 
 angular.module('EnergyMonitor').run();
-
-
 

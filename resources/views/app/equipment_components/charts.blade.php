@@ -1,14 +1,15 @@
 
-@foreach($equipment->getCharts() as $chart)
-    <div class="{{$chart['size'] or 'col-xs-12 col-md-8 col-xl-9'}}">
-        @component('components.panel', ['class' => 'box-primary'])
-            @slot('title')
-                {{__($chart['title'])}}
-            @endslot
-            {!! $chart['chart']->html() !!}
-        @endcomponent
+<div ng-controller="ChartsEquipmentManagerController" ng-init="init({{$equipment->id}})">
+    <div class="col-xs-12 col-md-8 col-xl-9" ng-repeat="chart in charts">
+        <chart-equipment data-equipment-id="equipment"
+                         data-chart-id="chart.id"
+                         data-chart-title="chart.title"
+                         data-chart-options='chart.options'
+                         data-date-widget="chart.date_widget"
+                         data-chart-type="chart.type"
+                         data-chart-data="[]"></chart-equipment>
     </div>
-@endforeach
+</div>
 
 
 <div class="col-md-12">

@@ -58,7 +58,7 @@ class LogsSheet implements FromCollection, WithTitle, WithMapping, WithHeadings
         return [
             $log->id,
             $log->value,
-            $this->variable->unite,
+            $this->variable->unit,
             $this->variable->printable_value,
             $log->created_at->format('Y/m/d H:i:s'),
         ];

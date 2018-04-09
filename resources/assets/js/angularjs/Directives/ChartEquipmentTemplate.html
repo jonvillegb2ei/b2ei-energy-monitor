@@ -1,0 +1,21 @@
+<div class="box box-primary" ng-init="loadChart()">
+    <div class="box-header with-border">
+        <h3 class="box-title">[{title}]</h3>
+        <div class="box-tools pull-right">
+            <div class="box-calendar">
+                <input style="display: none;" ng-change="loadChart()" type="text" uib-datepicker-popup="{{datepicker.format}}" ng-model="datepicker.date" is-open="datepicker.opened" datepicker-options="datepicker.options" ng-required="true" close-text="Close" current-text="Today" />
+            </div>
+            <button type="button" ng-click="openDatePopup($event)" class="btn btn-box-tool pull-right"><i class="fa fa-calendar"></i></button>
+        </div>
+    </div>
+    <div class="overlay" ng-if="messages.loading">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+    <div class="box-body ">
+        <canvas id="[{id}]-chart" class="chart chart-line" chart-data="chart_data"
+                chart-options="options" chart-series="series">
+        </canvas>
+    </div>
+</div>
+
+

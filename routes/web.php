@@ -32,6 +32,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/detail/{equipment}', 'EquipmentsController@equipment')->name('equipment');
         Route::post('/export/{equipment}', 'EquipmentsController@export')->name('equipment.export');
         Route::post('/chart/{equipment}', 'EquipmentsController@chart')->name('equipment.chart');
+
+        Route::post('/charts/{equipment}/{id}', 'EquipmentsController@charts')->name('equipment.charts');
+        Route::get('/charts/{equipment}', 'EquipmentsController@chartsDesc')->name('equipment.chartsDesc');
     });
 
     Route::group(['prefix' => 'profile'], function() {

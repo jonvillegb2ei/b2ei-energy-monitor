@@ -67,6 +67,7 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
             }]
         }
     };
+    console.log($scope.options);
     $scope.series = ['a'];
 
     $scope.loadChart = () => {

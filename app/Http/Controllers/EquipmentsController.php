@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\LogsExport;
 use App\Http\Requests\Equipments\ChartDataRequest;
+use App\Http\Requests\Equipments\ChartsDataRequest;
 use App\Http\Requests\Equipments\LogsExportRequest;
 use App\Models\Variable;
 use Carbon\Carbon;
@@ -88,7 +89,7 @@ class EquipmentsController extends Controller
             if ($endDate) $builder = $builder->whereDate('created_at', '<=', $endDate);
             $data = $builder->get()->map(function($log) {
                 return [
-                    'x' => $log->created_at->format("D M d Y H:i:s e O T"),
+                    'x' => $log->created_at->format("Y-m-d H:i:s"),
                     'y' => $log->value
                 ];
             });
@@ -98,6 +99,33 @@ class EquipmentsController extends Controller
 
         return $return;
 
+    }
+
+
+
+    public function chartsDesc(EquipmentInterface $equipment)
+    {
+        return response()->json($equipment->getCharts());
+    }
+
+
+
+    public function charts(EquipmentInterface $equipment, string $id, ChartsDataRequest $request) {
+        $charts = $equipment->getCharts();
+        if (!array_key_exists($id, $charts)) return abort(404);
+        $start = $request->input('date.startDate', null);
+        if ($start) {
+            $start = Carbon::parse($start);
+            if (!$start) $start = null;
+        }
+        $end = $request->input('date.endDate', null);
+        if ($end) {
+            $end = Carbon::parse($end);
+            if (!$end) $end = null;
+        }
+        $data = $charts[$id]['data']($start,$end);
+
+        return response()->json(['data' => $data, 'options' => $charts[$id]['options'], 'series' => $charts[$id]['series']]);
     }
 
 }

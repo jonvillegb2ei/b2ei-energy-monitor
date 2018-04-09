@@ -14987,3 +14987,6 @@ table.text-center th {
 .post .user-block {
   margin-bottom: 15px;
 }
+.box-calendar > div {
+  padding-right: 300px;
+}

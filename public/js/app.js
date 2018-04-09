@@ -124646,6 +124646,7 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
             }]
         }
     };
+    console.log($scope.options);
     $scope.series = ['a'];
 
     $scope.loadChart = function () {
@@ -124685,6 +124686,131 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
     $scope.export = function () {
         document.getElementById("advanced-chart").toBlob(function (blob) {
             FileSaver.saveAs(blob, "chart.png");
+        });
+    };
+}]);
+
+/***/ }),
+
+/***/ "./resources/assets/js/angularjs/Controllers/Equipments/ChartEquipmentController.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+angular.module('EnergyMonitor').controller('ChartEquipmentController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+
+    $scope.options = {};
+    $scope.series = [];
+    $scope.chart_data = [];
+
+    $scope.options = {
+        responsive: true,
+        legend: {
+            display: true,
+            position: 'top'
+        },
+        scales: {
+            xAxes: [{
+                type: 'time',
+                time: {
+                    displayFormats: {
+                        quarter: 'MMM YYYY'
+                    }
+                }
+            }]
+        }
+    };
+
+    var base_url = document.head.querySelector('meta[name="base-url"]').content;
+    $scope.messages = { 'error': '', 'success': '', 'detail': '', 'errors': {}, loading: false };
+
+    $scope.setSuccess = function (message, detail) {
+        $scope.messages.error = '';
+        $scope.messages.detail = '';
+        $scope.messages.success = message;
+        $scope.messages.detail = detail;
+        $timeout(function () {
+            $scope.messages.success = '';
+            $scope.messages.detail = '';
+        }, 3000);
+    };
+
+    $scope.setError = function (message, detail) {
+        $scope.messages.success = '';
+        $scope.messages.detail = '';
+        $scope.messages.error = message;
+        $scope.messages.detail = detail;
+        $timeout(function () {
+            $scope.messages.error = '';
+            $scope.messages.detail = '';
+        }, 3000);
+    };
+
+    $scope.setLoading = function (state) {
+        $scope.messages.loading = state;
+    };
+
+    $scope.openDatePopup = function () {
+        $scope.datepicker.opened = true;
+    };
+
+    $scope.datepicker = {
+        opened: false,
+        format: 'dd-MMMM-yyyy',
+        date: new Date(),
+        options: {
+            dateDisabled: false,
+            popupPlacement: "auto bottom-left",
+            formatYear: 'yy',
+            maxDate: new Date(),
+            startingDay: 1
+        }
+    };
+
+    $scope.loadChart = function () {
+        $scope.setLoading(true);
+        var data = { date: { startDate: $scope.datepicker.date, endDate: null } };
+        $http.post(base_url + '/equipments/charts/' + $scope.equipment + '/' + $scope.id, data).then(function (response) {
+            $scope.setLoading(false);
+            $scope.chart_data = response.data.data;
+            $scope.series = response.data.series;
+            for (var i = 0; i < $scope.chart_data.length; i++) {
+                for (var j = 0; j < $scope.chart_data[i].length; j++) {
+                    $scope.chart_data[i][j].x = new Date($scope.chart_data[i][j].x);
+                }
+            }
+        }, function (response) {
+            $scope.setLoading(false);
+            if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
+            if (typeof response.data.errors !== 'undefined') $scope.messages.errors = response.data.errors;
+        });
+    };
+}]);
+
+/***/ }),
+
+/***/ "./resources/assets/js/angularjs/Controllers/Equipments/ChartsEquipmentManagerController.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+angular.module('EnergyMonitor').controller('ChartsEquipmentManagerController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+
+    $scope.equipment = null;
+
+    $scope.charts = [];
+    var base_url = document.head.querySelector('meta[name="base-url"]').content;
+
+    $scope.init = function (id) {
+        $scope.equipment = id;
+        $scope.loadCharts();
+    };
+
+    $scope.loadCharts = function () {
+        $http.get(base_url + '/equipments/charts/' + $scope.equipment).then(function (response) {
+            $scope.charts = response.data;
         });
     };
 }]);
@@ -125205,6 +125331,39 @@ angular.module('EnergyMonitor').controller('SysLogsController', ['$scope', '$htt
 
 /***/ }),
 
+/***/ "./resources/assets/js/angularjs/Directives/ChartEquipment.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+angular.module('EnergyMonitor').directive('chartEquipment', [function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        transclude: false,
+        controller: "ChartEquipmentController",
+        scope: {
+            equipment: '=equipmentId',
+            id: '=chartId',
+            title: '=chartTitle',
+            type: '=chartType',
+            date_widget: '=dateWidget',
+            options: '=chartOptions'
+        },
+        template: __webpack_require__("./resources/assets/js/angularjs/Directives/ChartEquipmentTemplate.html")
+    };
+}]);
+
+/***/ }),
+
+/***/ "./resources/assets/js/angularjs/Directives/ChartEquipmentTemplate.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"box box-primary\" ng-init=\"loadChart()\">\n    <div class=\"box-header with-border\">\n        <h3 class=\"box-title\">[{title}]</h3>\n        <div class=\"box-tools pull-right\">\n            <div class=\"box-calendar\">\n                <input style=\"display: none;\" ng-change=\"loadChart()\" type=\"text\" uib-datepicker-popup=\"{{datepicker.format}}\" ng-model=\"datepicker.date\" is-open=\"datepicker.opened\" datepicker-options=\"datepicker.options\" ng-required=\"true\" close-text=\"Close\" current-text=\"Today\" />\n            </div>\n            <button type=\"button\" ng-click=\"openDatePopup($event)\" class=\"btn btn-box-tool pull-right\"><i class=\"fa fa-calendar\"></i></button>\n        </div>\n    </div>\n    <div class=\"overlay\" ng-if=\"messages.loading\">\n        <i class=\"fa fa-refresh fa-spin\"></i>\n    </div>\n    <div class=\"box-body \">\n        <canvas id=\"[{id}]-chart\" class=\"chart chart-line\" chart-data=\"chart_data\"\n                chart-options=\"options\" chart-series=\"series\">\n        </canvas>\n    </div>\n</div>\n\n\n";
+
+/***/ }),
+
 /***/ "./resources/assets/js/app.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -125228,6 +125387,9 @@ __webpack_require__("./node_modules/angular-file-saver/dist/angular-file-saver.b
  */
 
 __webpack_require__("./resources/assets/js/bootstrap.js");
+
+// let angular_ui_bootstrap = require('angular-ui-bootstrap');
+
 
 window.viewport = __webpack_require__("./node_modules/responsive-toolkit/src/bootstrap-toolkit.js");
 
@@ -125269,6 +125431,10 @@ __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/Equi
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ExportController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ChartController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ChartConfigController.js");
+__webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ChartEquipmentController.js");
+__webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ChartsEquipmentManagerController.js");
+
+__webpack_require__("./resources/assets/js/angularjs/Directives/ChartEquipment.js");
 
 angular.module('EnergyMonitor').run();
 

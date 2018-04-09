@@ -6,17 +6,7 @@
     @endcomponent
 @endsection
 
-@section('head')
-    {!! Charts::styles() !!}
-@endsection
 
-@section('script')
-    {!! Charts::scripts() !!}
-    @foreach($equipment->getCharts() as $chart)
-        {!! $chart['chart']->script() !!}
-    @endforeach
-
-@endsection
 
 @section('content')
     <div class="row">

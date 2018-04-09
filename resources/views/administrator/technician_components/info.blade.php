@@ -6,7 +6,7 @@
         <ul class="list-group list-group-unbordered">
             <li class="list-group-item"><b>{{__('Product brand')}}</b> <a class="pull-right">{{__($equipment->product->brand)}}</a></li>
             <li class="list-group-item"><b>{{__('Product reference')}}</b> <a class="pull-right">{{__($equipment->product->reference)}}</a></li>
-            <li class="list-group-item"><b>{{__('Address Ip')}}</b> <a class="pull-right">{{__($equipment->address_ip)}}':'{{__($equipment->port)}}</a></li>
+            <li class="list-group-item"><b>{{__('Address Ip')}}</b> <a class="pull-right">{{__($equipment->address_ip)}}:{{__($equipment->port)}}</a></li>
             <li class="list-group-item"><b>{{__('Slave id')}}</b> <a class="pull-right">{{__($equipment->slave)}}</a></li>
             @foreach($equipment->widgetVariables as $variable)
                 <li class="list-group-item"><b>{{__($variable->printable_name)}}</b> <a class="pull-right">{{__($variable->printable_value)}}</a></li>
@@ -34,7 +34,7 @@
                 </form>
             </div>
             <div class="col-md-12 text-warning">
-                {{__('*This action will remove equipment and all data associated.')}}
+                {{__(' * This action will remove equipment and all data associated.')}}
             </div>
         </div>
     </div>

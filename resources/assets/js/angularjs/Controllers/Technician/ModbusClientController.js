@@ -9,6 +9,7 @@ angular.module('EnergyMonitor').controller('ModbusClientController', ['$scope', 
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(() => {
             $scope.messages.success = '';
             $scope.messages.detail = '';

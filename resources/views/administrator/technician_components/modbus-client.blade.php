@@ -9,21 +9,21 @@
         <div class="col-md-6">
             <div class="form-group" ng-class="messages.errors.address_ip.length > 0 ? 'has-error' : ''">
                 <label for="address_ip">Address Ip</label>
-                <input type="text" name="address_ip" id="modbus_address_ip" class="form-control" ng-model="client.address_ip">
+                <input type="text" name="address_ip" id="modbus_address_ip" class="form-control" ng-model="client.address_ip" placeholder="{{__('Put a valid IP V4 Address')}}">
                 <span class="help-block" ng-show="messages.errors.address_ip.length > 0">[{messages.errors.address_ip[0]}]</span>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group" ng-class="messages.errors.port.length > 0 ? 'has-error' : ''">
                 <label for="port">Port</label>
-                <input type="number" min="0" max="65535" name="port" id="port" class="form-control" ng-model="client.port">
+                <input type="number" min="0" max="65535" name="port" id="port" class="form-control" ng-model="client.port" placeholder="{{__('Put a valid TCP port')}}">
                 <span class="help-block" ng-show="messages.errors.port.length > 0">[{messages.errors.port[0]}]</span>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group" ng-class="messages.errors.slave.length > 0 ? 'has-error' : ''">
                 <label for="slave">Slave</label>
-                <input type="number" min="0" max="255" name="slave" id="slave" class="form-control" ng-model="client.slave">
+                <input type="number" min="0" max="255" name="slave" id="slave" class="form-control" ng-model="client.slave" placeholder="{{__('Put a valid slave identifier')}}">
                 <span class="help-block" ng-show="messages.errors.slave.length > 0">[{messages.errors.slave[0]}]</span>
             </div>
         </div>
@@ -33,14 +33,14 @@
         <div class="col-md-6">
             <div class="form-group" ng-class="messages.errors.register.length > 0 ? 'has-error' : ''">
                 <label for="register">Register</label>
-                <input type="number" min="0" max="65535" name="register" id="register" class="form-control" ng-model="client.register">
+                <input type="number" min="0" max="65535" name="register" id="register" class="form-control" ng-model="client.register" placeholder="{{__('Put a valid register')}}">
                 <span class="help-block" ng-show="messages.errors.register.length > 0">[{messages.errors.register[0]}]</span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group" ng-class="messages.errors.length.length > 0 ? 'has-error' : ''">
                 <label for="length">Length</label>
-                <input type="number" min="1" max="50" name="length" id="length" class="form-control" ng-model="client.length">
+                <input type="number" min="1" max="50" name="length" id="length" class="form-control" ng-model="client.length" placeholder="{{__('Put a valid data length')}}">
                 <span class="help-block" ng-show="messages.errors.length.length > 0">[{messages.errors.length[0]}]</span>
             </div>
         </div>

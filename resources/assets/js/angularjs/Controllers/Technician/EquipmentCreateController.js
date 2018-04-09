@@ -1,5 +1,5 @@
 
-angular.module('EnergyMonitor').controller('EquipmentCreateController', ['$scope', '$http', '$timeout', '$window', ($scope, $http, $timeout, $window) => {
+angular.module('EnergyMonitor').controller('EquipmentCreateController', ['$scope', '$http', '$timeout', '$rootScope', ($scope, $http, $timeout, $rootScope) => {
 
     let base_url = document.head.querySelector('meta[name="base-url"]').content;
     $scope.messages = {'error': '', 'success': '', 'detail':'', 'errors': {}, loading: false};
@@ -9,6 +9,7 @@ angular.module('EnergyMonitor').controller('EquipmentCreateController', ['$scope
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(() => {
             $scope.messages.success = '';
             $scope.messages.detail = '';
@@ -30,21 +31,16 @@ angular.module('EnergyMonitor').controller('EquipmentCreateController', ['$scope
         $scope.messages.loading = state;
     };
 
-    $scope.data = {
-        'product_id': 1,
-        'name': '',
-        'address_ip': '',
-        'port': 502,
-        'slave': 1,
-        'localisation': '',
-    };
+    $scope.data = { 'product_id': "1", 'name': '', 'address_ip': '', 'port': 502, 'slave': 1, 'localisation': '' };
     $scope.create = () => {
         $scope.setLoading(true);
         $http.post(base_url + '/admin/technician/add/', $scope.data).then((response) => {
             $scope.setLoading(false);
-            if (response.data.return)
+            if (response.data.return) {
                 $scope.setSuccess(response.data.message, response.data.output);
-            else
+                $rootScope.$broadcast('equipment-created', $scope.data);
+                $scope.data = { 'product_id': "1", 'name': '', 'address_ip': '', 'port': 502, 'slave': 1, 'localisation': '' };
+            } else
                 $scope.setError(response.data.message, response.data.output);
         }, (response) => {
             $scope.setLoading(false);

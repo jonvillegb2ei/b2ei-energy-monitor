@@ -74,11 +74,16 @@ Route::group(['middleware' => 'auth'], function() {
             Route::post('/add/', 'TechnicianController@addEquipment')->name('technician.equipment.add');
             Route::post('/edit/{equipment}', 'TechnicianController@editEquipment')->name('technician.equipment.edit');
             Route::get('/detail/{equipment}', 'TechnicianController@detail')->name('technician.equipment.detail');
+
+
+            Route::get('/variables/{equipment}', 'TechnicianController@variables')->name('technician.equipment.variables');
+            Route::post('/variable/edit/{variable}', 'TechnicianController@editVariable')->name('technician.equipment.edit-variable');
         });
 
 
         Route::group(['prefix' => 'users'], function() {
             Route::get('/', 'UsersController@index')->name('users');
+            Route::get('/list', 'UsersController@users')->name('users.list');
             Route::post('/create', 'UsersController@create')->name('users.create');
             Route::post('/remove/{user}', 'UsersController@remove')->name('users.remove');
             Route::get('/administrator/{user}/change-state', 'UsersController@changeAdministratorState')->name('users.change-administrator');

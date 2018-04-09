@@ -124,10 +124,11 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                 ],
                 'data' => function(Carbon $start = null, Carbon $end = null) {
                     if (is_null($start))
-                        [$start,$end] = [Carbon::now()->subHours(24), Carbon::now()];
+                        [$start, $end] = [Carbon::now()->subHours(24), Carbon::now()];
                     if (is_null($end)) {
+                        $start = $start -> startOfDay();
                         $end = clone $start;
-                        $end = $end -> addHours(24);
+                        $end = $end->addHours(24);
                     }
                     $voltage12Data = $this->variables()->whereName('voltage12')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
                     $voltage23Data = $this->variables()->whereName('voltage23')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
@@ -183,10 +184,11 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                 ],
                 'data' => function(Carbon $start = null, Carbon $end = null) {
                     if (is_null($start))
-                        [$start,$end] = [Carbon::now()->subHours(24), Carbon::now()];
+                        [$start, $end] = [Carbon::now()->subHours(24), Carbon::now()];
                     if (is_null($end)) {
+                        $start = $start -> startOfDay();
                         $end = clone $start;
-                        $end = $end -> addHours(24);
+                        $end = $end->addHours(24);
                     }
                     $activePowerData = $this->variables()->whereName('active_power')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
                     $activePowerData1 = $this->variables()->whereName('active_power1')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();

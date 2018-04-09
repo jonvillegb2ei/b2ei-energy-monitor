@@ -12,7 +12,7 @@
             @include('administrator.users_components.create-user')
         </div>
         <div class="col-md-9">
-            @include('administrator.users_components.table')
+            @include('administrator.users_components.users')
         </div>
     </div>
 @endsection

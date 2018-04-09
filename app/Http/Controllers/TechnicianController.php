@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Technician\CreateEquipmentRequest;
 use App\Http\Requests\Technician\EditEquipmentRequest;
+use App\Http\Requests\Technician\EditVariableRequest;
 use App\Http\Requests\Technician\IdentifyRequest;
 use App\Http\Requests\Technician\PingRequest;
 use App\Http\Requests\Technician\ReadRegistersRequest;
@@ -11,6 +12,7 @@ use App\Libraries\LibModbusLaravel\ModbusDataCollection;
 use App\Libraries\LibModbusLaravel\TcpIp\ModbusClient;
 use App\Models\Equipment;
 use App\Models\Product;
+use App\Models\Variable;
 use Symfony\Component\Process\Process;
 
 class TechnicianController extends Controller
@@ -40,7 +42,6 @@ class TechnicianController extends Controller
 
         return response()->view('administrator.technician', ['equipments' => $equipments, 'products' => $products, 'syslogs' => $syslogs, 'applogs' => $applogs, 'dmesg' => $dmesg]);
     }
-
 
     public function equipments() {
         $equipments = Equipment::paginate(8);
@@ -118,6 +119,20 @@ class TechnicianController extends Controller
             return response()->json(['return' => false, 'message' => 'Error during ping.', 'output' => $process->getOutput()]);
         else
             return response()->json(['return' => true, 'message' => 'Device reply with a pong.', 'output' => $process->getOutput()]);
+    }
+
+
+    public function variables(Equipment $equipment)
+    {
+        return $equipment->variables;
+    }
+
+    public function editVariable(EditVariableRequest $request, Variable $variable)
+    {
+        $variable->log_expiration = $request->input('log_expiration', 0);
+        $variable->log_interval = $request->input('log_interval', 0);
+        if ($variable->save()) return response()->json(['return' => true, 'message' => 'Variable edited']);
+        else return response()->json(['return' => false, 'message' => 'Can\'t edit variable.']);
     }
 
     /**

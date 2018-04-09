@@ -9,6 +9,7 @@ angular.module('EnergyMonitor').controller('EquipmentsController', ['$scope', '$
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(() => {
             $scope.messages.success = '';
             $scope.messages.detail = '';
@@ -30,6 +31,8 @@ angular.module('EnergyMonitor').controller('EquipmentsController', ['$scope', '$
         $scope.messages.loading = state;
     };
 
+
+    $scope.$on('equipment-created', (data) => { $scope.load(); });
 
     $scope.page = 1;
     $scope.total = 0;

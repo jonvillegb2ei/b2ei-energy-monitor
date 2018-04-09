@@ -10,4 +10,11 @@
     <div class="box-body {{$body_class or ''}}">
         {{$slot}}
     </div>
+    @isset($overlay)
+    @if($overlay)
+    <div class="overlay" ng-if="messages.loading">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+    @endif
+    @endisset
 </div>

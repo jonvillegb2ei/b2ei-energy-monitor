@@ -7,6 +7,7 @@ angular.module('EnergyMonitor').controller('PingController', ['$scope', '$http',
     $scope.setSuccess = (message, detail) => {
         $scope.messages.error = '';
         $scope.messages.detail = '';
+        $scope.messages.errors = {};
         $scope.messages.success = message;
         $scope.messages.detail = detail;
         $timeout(() => {

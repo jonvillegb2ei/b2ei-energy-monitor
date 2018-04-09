@@ -25,7 +25,7 @@ class CreateEquipmentRequest extends FormRequest
     {
         return [
             'localisation' => 'nullable|string|min:0|max:250|unique:equipments,name',
-            'name' => 'nullable|string|min:0|max:250',
+            'name' => 'required|string|min:0|max:250|unique:equipments',
             'address_ip' => 'required|ip',
             'port' => 'required|numeric|min:1|max:65535',
             'slave' => 'required|numeric|min:0|max:255',

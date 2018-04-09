@@ -1,5 +1,5 @@
 
-@component('components.panel', ['title' => 'Equipments', 'body_class' => 'no-padding', 'controller' => 'EquipmentsController'])
+@component('components.panel', ['title' => 'Equipments', 'overlay' => true, 'body_class' => 'no-padding', 'controller' => 'EquipmentsController'])
 
 
     @slot('tools')
@@ -7,7 +7,7 @@
     @endslot
 
     <div style="padding-right: 15px; padding-left: 15px">
-        @component('components.angular-messages')
+        @component('components.angular-messages', ['loading' => false])
         @endcomponent
     </div>
 

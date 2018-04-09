@@ -124835,6 +124835,7 @@ angular.module('EnergyMonitor').controller('ExportController', ['$scope', '$http
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(function () {
             $scope.messages.success = '';
             $scope.messages.detail = '';
@@ -124898,6 +124899,7 @@ angular.module('EnergyMonitor').controller('AppLogsController', ['$scope', '$htt
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(function () {
             $scope.messages.success = '';
             $scope.messages.detail = '';
@@ -124943,7 +124945,7 @@ angular.module('EnergyMonitor').controller('AppLogsController', ['$scope', '$htt
 "use strict";
 
 
-angular.module('EnergyMonitor').controller('EquipmentCreateController', ['$scope', '$http', '$timeout', '$window', function ($scope, $http, $timeout, $window) {
+angular.module('EnergyMonitor').controller('EquipmentCreateController', ['$scope', '$http', '$timeout', '$rootScope', function ($scope, $http, $timeout, $rootScope) {
 
     var base_url = document.head.querySelector('meta[name="base-url"]').content;
     $scope.messages = { 'error': '', 'success': '', 'detail': '', 'errors': {}, loading: false };
@@ -124953,6 +124955,7 @@ angular.module('EnergyMonitor').controller('EquipmentCreateController', ['$scope
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(function () {
             $scope.messages.success = '';
             $scope.messages.detail = '';
@@ -124974,19 +124977,16 @@ angular.module('EnergyMonitor').controller('EquipmentCreateController', ['$scope
         $scope.messages.loading = state;
     };
 
-    $scope.data = {
-        'product_id': 1,
-        'name': '',
-        'address_ip': '',
-        'port': 502,
-        'slave': 1,
-        'localisation': ''
-    };
+    $scope.data = { 'product_id': "1", 'name': '', 'address_ip': '', 'port': 502, 'slave': 1, 'localisation': '' };
     $scope.create = function () {
         $scope.setLoading(true);
         $http.post(base_url + '/admin/technician/add/', $scope.data).then(function (response) {
             $scope.setLoading(false);
-            if (response.data.return) $scope.setSuccess(response.data.message, response.data.output);else $scope.setError(response.data.message, response.data.output);
+            if (response.data.return) {
+                $scope.setSuccess(response.data.message, response.data.output);
+                $rootScope.$broadcast('equipment-created', $scope.data);
+                $scope.data = { 'product_id': "1", 'name': '', 'address_ip': '', 'port': 502, 'slave': 1, 'localisation': '' };
+            } else $scope.setError(response.data.message, response.data.output);
         }, function (response) {
             $scope.setLoading(false);
             if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
@@ -125013,6 +125013,7 @@ angular.module('EnergyMonitor').controller('EquipmentsController', ['$scope', '$
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(function () {
             $scope.messages.success = '';
             $scope.messages.detail = '';
@@ -125033,6 +125034,10 @@ angular.module('EnergyMonitor').controller('EquipmentsController', ['$scope', '$
     $scope.setLoading = function (state) {
         $scope.messages.loading = state;
     };
+
+    $scope.$on('equipment-created', function (data) {
+        $scope.load();
+    });
 
     $scope.page = 1;
     $scope.total = 0;
@@ -125098,6 +125103,7 @@ angular.module('EnergyMonitor').controller('IdentifyController', ['$scope', '$ht
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(function () {
             $scope.messages.success = '';
             $scope.messages.detail = '';
@@ -125158,6 +125164,7 @@ angular.module('EnergyMonitor').controller('ModbusClientController', ['$scope', 
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(function () {
             $scope.messages.success = '';
             $scope.messages.detail = '';
@@ -125234,6 +125241,7 @@ angular.module('EnergyMonitor').controller('PingController', ['$scope', '$http',
     $scope.setSuccess = function (message, detail) {
         $scope.messages.error = '';
         $scope.messages.detail = '';
+        $scope.messages.errors = {};
         $scope.messages.success = message;
         $scope.messages.detail = detail;
         $timeout(function () {
@@ -125331,6 +125339,223 @@ angular.module('EnergyMonitor').controller('SysLogsController', ['$scope', '$htt
 
 /***/ }),
 
+/***/ "./resources/assets/js/angularjs/Controllers/Technician/VariablesController.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+angular.module('EnergyMonitor').controller('VariablesController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+
+    var base_url = document.head.querySelector('meta[name="base-url"]').content;
+    $scope.messages = { 'error': '', 'success': '', 'detail': '', 'errors': {}, loading: false };
+    $scope.equipment = null;
+
+    $scope.setSuccess = function (message, detail) {
+        $scope.messages.error = '';
+        $scope.messages.detail = '';
+        $scope.messages.success = message;
+        $scope.messages.detail = detail;
+        $timeout(function () {
+            $scope.messages.success = '';
+            $scope.messages.detail = '';
+        }, 3000);
+    };
+
+    $scope.setError = function (message, detail) {
+        $scope.messages.success = '';
+        $scope.messages.detail = '';
+        $scope.messages.error = message;
+        $scope.messages.detail = detail;
+        $timeout(function () {
+            $scope.messages.error = '';
+            $scope.messages.detail = '';
+        }, 3000);
+    };
+
+    $scope.setLoading = function (state) {
+        $scope.messages.loading = state;
+    };
+
+    $scope.init = function (equipment) {
+        $scope.equipment = equipment;
+        $scope.load();
+    };
+
+    $scope.load = function () {
+        $scope.setLoading(true);
+        $http.get(base_url + '/admin/technician/variables/' + $scope.equipment).then(function (response) {
+            $scope.variables = response.data;
+            $scope.setLoading(false);
+        }, function () {
+            $scope.variables = [];
+            $scope.setLoading(false);
+        });
+    };
+
+    $scope.edit = function (variable) {
+        $scope.setLoading(true);
+        $http.post(base_url + '/admin/technician/variable/edit/' + variable.id, variable).then(function (response) {
+            $scope.setLoading(false);
+            if (response.data.return) $scope.setSuccess(response.data.message, '');else $scope.setError(response.data.message, '');
+        }, function () {
+            $scope.variables = [];
+            $scope.setLoading(false);
+        });
+    };
+}]);
+
+/***/ }),
+
+/***/ "./resources/assets/js/angularjs/Controllers/Users/CreateUserController.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+angular.module('EnergyMonitor').controller('CreateUserController', ['$scope', '$http', '$timeout', '$rootScope', function ($scope, $http, $timeout, $rootScope) {
+
+    var base_url = document.head.querySelector('meta[name="base-url"]').content;
+    $scope.messages = { 'error': '', 'success': '', 'detail': '', 'errors': {}, loading: false };
+
+    $scope.setSuccess = function (message, detail) {
+        $scope.messages.error = '';
+        $scope.messages.detail = '';
+        $scope.messages.success = message;
+        $scope.messages.detail = detail;
+        $timeout(function () {
+            $scope.messages.success = '';
+            $scope.messages.detail = '';
+        }, 3000);
+    };
+
+    $scope.setError = function (message, detail) {
+        $scope.messages.success = '';
+        $scope.messages.detail = '';
+        $scope.messages.error = message;
+        $scope.messages.detail = detail;
+        $timeout(function () {
+            $scope.messages.error = '';
+            $scope.messages.detail = '';
+        }, 3000);
+    };
+
+    $scope.setLoading = function (state) {
+        $scope.messages.loading = state;
+    };
+
+    $scope.data = { firstname: '', lastname: '', email: '', password: '', password_confirmation: '' };
+
+    $scope.create = function () {
+        $scope.setLoading(true);
+        $http.post(base_url + '/admin/users/create', $scope.data).then(function (response) {
+            $scope.setLoading(false);
+            if (response.data.return) {
+                $scope.setSuccess(response.data.message, '');
+                $scope.messages.errors = {};
+                $rootScope.$broadcast('user-created', $scope.data);
+                $scope.data = { firstname: '', lastname: '', email: '', password: '', password_confirmation: '' };
+            } else $scope.setError(response.data.message, '');
+        }, function (response) {
+            $scope.setLoading(false);
+            if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
+            if (typeof response.data.errors !== 'undefined') $scope.messages.errors = response.data.errors;
+        });
+    };
+}]);
+
+/***/ }),
+
+/***/ "./resources/assets/js/angularjs/Controllers/Users/TableUserController.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+angular.module('EnergyMonitor').controller('TableUserController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+
+    var base_url = document.head.querySelector('meta[name="base-url"]').content;
+    $scope.messages = { 'error': '', 'success': '', 'detail': '', 'errors': {}, loading: false };
+
+    $scope.setSuccess = function (message, detail) {
+        $scope.messages.error = '';
+        $scope.messages.detail = '';
+        $scope.messages.success = message;
+        $scope.messages.detail = detail;
+        $timeout(function () {
+            $scope.messages.success = '';
+            $scope.messages.detail = '';
+        }, 3000);
+    };
+
+    $scope.setError = function (message, detail) {
+        $scope.messages.success = '';
+        $scope.messages.detail = '';
+        $scope.messages.error = message;
+        $scope.messages.detail = detail;
+        $timeout(function () {
+            $scope.messages.error = '';
+            $scope.messages.detail = '';
+        }, 3000);
+    };
+
+    $scope.setLoading = function (state) {
+        $scope.messages.loading = state;
+    };
+
+    $scope.users = [];
+
+    $scope.$on('user-created', function (data) {
+        $scope.load();
+    });
+
+    $scope.load = function () {
+        $scope.setLoading(true);
+        $http.get(base_url + '/admin/users/list').then(function (response) {
+            $scope.setLoading(false);
+            $scope.users = response.data;
+            $scope.messages.errors = {};
+            $scope.setSuccess('');
+        }, function (response) {
+            $scope.setLoading(false);
+            if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
+            if (typeof response.data.errors !== 'undefined') $scope.messages.errors = response.data.errors;
+        });
+    };
+
+    $scope.changeAdministrator = function (user) {
+        $scope.setLoading(true);
+        $http.get(base_url + '/admin/users/administrator/' + user.id + '/change-state').then(function (response) {
+            $scope.setLoading(false);
+            if (response.data.return) {
+                $scope.setSuccess(response.data.message, '');
+                user.administrator = !user.administrator;
+            } else $scope.setError(response.data.message, '');
+        }, function (response) {
+            $scope.setLoading(false);
+            if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
+            if (typeof response.data.errors !== 'undefined') $scope.messages.errors = response.data.errors;
+        });
+    };
+
+    $scope.remove = function (user) {
+        $scope.setLoading(true);
+        $http.post(base_url + '/admin/users/remove/' + user.id, user).then(function (response) {
+            $scope.setLoading(false);
+            if (response.data.return) {
+                $scope.setSuccess(response.data.message, '');
+                $scope.load();
+            } else $scope.setError(response.data.message, '');
+        }, function (response) {
+            $scope.setLoading(false);
+            if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
+            if (typeof response.data.errors !== 'undefined') $scope.messages.errors = response.data.errors;
+        });
+    };
+}]);
+
+/***/ }),
+
 /***/ "./resources/assets/js/angularjs/Directives/ChartEquipment.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -125420,6 +125645,9 @@ angular.module('EnergyMonitor', ['angular-loading-bar', 'ngAnimate', 'ui.bootstr
     });
 });
 
+__webpack_require__("./resources/assets/js/angularjs/Controllers/Users/CreateUserController.js");
+__webpack_require__("./resources/assets/js/angularjs/Controllers/Users/TableUserController.js");
+
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/ModbusClientController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/AppLogsController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/SysLogsController.js");
@@ -125427,6 +125655,7 @@ __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/Ping
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/IdentifyController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/EquipmentsController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/EquipmentCreateController.js");
+__webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/VariablesController.js");
 
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ExportController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Equipments/ChartController.js");

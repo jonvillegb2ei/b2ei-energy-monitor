@@ -64,6 +64,7 @@ namespace App\Models{
  * @property int $log
  * @property string $type
  * @property int $log_expiration
+ * @property int $log_interval
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Models\Equipment $equipment

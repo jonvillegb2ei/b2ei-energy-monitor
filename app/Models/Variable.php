@@ -56,7 +56,7 @@ class Variable extends Model
      *
      * @var string
      */
-    protected $appends = ['printable_name', 'printable_value'];
+    protected $appends = ['printable_name', 'printable_value', 'updated_since'];
 
 
     public function logs() {

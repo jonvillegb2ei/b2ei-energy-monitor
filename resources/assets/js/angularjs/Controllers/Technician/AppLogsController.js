@@ -9,6 +9,7 @@ angular.module('EnergyMonitor').controller('AppLogsController', ['$scope', '$htt
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(() => {
             $scope.messages.success = '';
             $scope.messages.detail = '';

@@ -136,6 +136,7 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                     if (is_null($start))
                         [$start, $end] = [Carbon::now()->subHours(24), Carbon::now()];
                     if (is_null($end)) {
+                        $start = $start -> startOfDay();
                         $end = clone $start;
                         $end = $end->addHours(24);
                     }
@@ -165,6 +166,7 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                     if (is_null($start))
                         [$start, $end] = [Carbon::now()->subHours(24), Carbon::now()];
                     if (is_null($end)) {
+                        $start = $start -> startOfDay();
                         $end = clone $start;
                         $end = $end->addHours(24);
                     }
@@ -195,6 +197,7 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                     if (is_null($start))
                         [$start, $end] = [Carbon::now()->subHours(24), Carbon::now()];
                     if (is_null($end)) {
+                        $start = $start -> startOfDay();
                         $end = clone $start;
                         $end = $end->addHours(24);
                     }

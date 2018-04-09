@@ -20,31 +20,39 @@ class UsersController extends Controller
         return response()->view('administrator.users', ['users' => User::all()]);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function users()
+    {
+        return User::all();
+    }
+
     public function create(CreateUserRequest $request)
     {
         $password = $request->input('password');
         $user = User::create($request->all());
         $user -> password = Hash::make($password);
         if ($user->save())
-            return redirect()->back()->with('create-success', ['message' => 'User created.']);
+            return response()->json(['return' => true, 'message' => 'User created.']);
         else
-            return redirect()->back()->with('create-error', ['message' => 'Error during user creation.']);
+            return response()->json(['return' => false, 'message' => 'Error during user creation.']);
     }
 
     public function changeAdministratorState(User $user)
     {
         if ($user->id == Auth::user()->id)
-            return redirect()->back()->with('table-error', ['message' => 'You can\'t delete yourself.']);
+            return response()->json(['return' => false, 'message' => 'You can\'t delete yourself.']);
         $user->administrator = !$user->administrator;
         if ($user->save())
-            return redirect()->back()->with('table-success', ['message' => 'Administrator state changed.']);
+            return response()->json(['return' => true, 'message' => 'Administrator state changed.']);
         else
-            return redirect()->back()->with('table-error', ['message' => 'Error during administrator state change.']);
+            return response()->json(['return' => false, 'message' => 'Error during administrator state change.']);
     }
 
 
     /**
-     * Remove an equipment.
+     * Remove an user.
      *
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse
@@ -53,10 +61,10 @@ class UsersController extends Controller
     public function remove (User $user)
     {
         if ($user->id == Auth::user()->id)
-            return redirect()->back()->with('table-error', ['message' => 'You can\'t delete yourself.']);
+            return response()->json(['return' => false, 'message' => 'You can\'t delete yourself.']);
         else if ($user->delete())
-            return redirect()->back()->with('table-success', ['message' => 'User deleted.']);
+            return response()->json(['return' => true, 'message' => 'User deleted.']);
         else
-            return redirect()->back()->with('table-error', ['message' => 'Error during user deletion.']);
+            return response()->json(['return' => false, 'message' => 'Error during user deletion.']);
     }
 }

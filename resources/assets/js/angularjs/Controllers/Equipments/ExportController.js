@@ -10,6 +10,7 @@ angular.module('EnergyMonitor').controller('ExportController', ['$scope', '$http
         $scope.messages.detail = '';
         $scope.messages.success = message;
         $scope.messages.detail = detail;
+        $scope.messages.errors = {};
         $timeout(() => {
             $scope.messages.success = '';
             $scope.messages.detail = '';

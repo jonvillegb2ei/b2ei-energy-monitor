@@ -14,13 +14,13 @@
     <table class="table">
         <tbody>
         <tr>
-            <th style="width: 10px">#</th>
-            <th>{{__('Name')}}</th>
-            <th>{{__('Localisation')}}</th>
-            <th>{{__('Brand')}}</th>
-            <th>{{__('Reference')}}</th>
-            <th>{{__('Address IP')}}</th>
-            <th>{{__('Slave')}}</th>
+            <th style="width: 10px">{{trans('technician.table.id')}}</th>
+            <th>{{trans('technician.table.name')}}</th>
+            <th>{{trans('technician.table.localisation')}}</th>
+            <th>{{trans('technician.table.brand')}}</th>
+            <th>{{trans('technician.table.reference')}}</th>
+            <th>{{trans('technician.table.ip-address')}}</th>
+            <th>{{trans('technician.table.slave')}}</th>
             <th>&nbsp;</th>
         </tr>
             <tr ng-repeat="equipment in equipments">
@@ -33,16 +33,16 @@
                 <td>[{equipment.slave}]</td>
                 <td>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">{{__('Action')}}</button>
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">{{trans('technician.table.action.title')}}</button>
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                             <span class="caret"></span>
-                            <span class="sr-only">{{__('Toggle Dropdown')}}</span>
+                            <span class="sr-only">{{trans('app.toggle-dropdown')}}</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#" ng-click="ping(equipment.id)">{{__('Ping device IP')}}</a></li>
-                            <li><a href="#" ng-click="test(equipment.id)">{{__('Test equipment')}}</a></li>
+                            <li><a href="#" ng-click="ping(equipment.id)">{{trans('technician.table.action.ping')}}</a></li>
+                            <li><a href="#" ng-click="test(equipment.id)">{{trans('technician.table.action.test')}}</a></li>
                             <li class="divider"></li>
-                            <li><a href="#" ng-click="detail(equipment.id)">{{__('Advanced parameters')}}</a></li>
+                            <li><a href="#" ng-click="detail(equipment.id)">{{trans('technician.table.action.advanced')}}</a></li>
                         </ul>
                     </div>
                 </td>

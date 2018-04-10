@@ -56,6 +56,7 @@ angular.module('EnergyMonitor', ['angular-loading-bar', 'ngAnimate', 'ui.bootstr
 require('./angularjs/Controllers/Users/CreateUserController.js');
 require('./angularjs/Controllers/Users/TableUserController.js');
 
+require('./angularjs/Controllers/Technician/EquipmentEditController.js');
 require('./angularjs/Controllers/Technician/ModbusClientController.js');
 require('./angularjs/Controllers/Technician/AppLogsController.js');
 require('./angularjs/Controllers/Technician/SysLogsController.js');

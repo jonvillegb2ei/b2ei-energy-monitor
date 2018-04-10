@@ -60,9 +60,9 @@ class EquipmentsController extends Controller
         $variables = Variable::whereIn('id', $request->input('variables'))->get();
         $file = "tmp/export_".uniqid().".xlsx";
         if (Excel::store(new LogsExport($variables, $startDate, $endDate), $file, 'public'))
-            return response()->json(['return'=>true, 'message' => 'File ready to download.', 'url' => url(asset("storage/".$file))]);
+            return response()->json(['return'=>true, 'message' => trans('app.export-ready'), 'url' => url(asset("storage/".$file))]);
         else
-            return response()->json(['return'=>false, 'message' => 'Error during export generation.']);
+            return response()->json(['return'=>false, 'message' => trans('app.export-error')]);
     }
 
     public function chart(EquipmentInterface $equipment, ChartDataRequest $request) {

@@ -1,5 +1,5 @@
 
-@component('components.panel', ['title' => 'System logs', 'controller' => 'SysLogsController'])
+@component('components.panel', ['title' => trans('technician.sys-log'), 'controller' => 'SysLogsController'])
 
     @component('components.angular-messages')
 

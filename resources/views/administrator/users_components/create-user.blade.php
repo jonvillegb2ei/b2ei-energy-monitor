@@ -48,7 +48,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <button class="btn btn-primary pull-right" ng-click="create()">{{trans('users.button')}}</button>
+            <button class="btn btn-primary pull-right" ng-click="create()">{{trans('users.create.button')}}</button>
         </div>
     </div>
 

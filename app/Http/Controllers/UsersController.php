@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * Show users main page.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,6 +20,8 @@ class UsersController extends Controller
     }
 
     /**
+     * Return all user
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function users()
@@ -28,28 +29,39 @@ class UsersController extends Controller
         return User::all();
     }
 
+    /**
+     * Create an user
+     *
+     * @param CreateUserRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create(CreateUserRequest $request)
     {
         $password = $request->input('password');
         $user = User::create($request->all());
         $user -> password = Hash::make($password);
         if ($user->save())
-            return response()->json(['return' => true, 'message' => 'User created.']);
+            return response()->json(['return' => true, 'message' => trans('users.create.success')]);
         else
-            return response()->json(['return' => false, 'message' => 'Error during user creation.']);
+            return response()->json(['return' => false, 'message' => trans('users.create.error')]);
     }
 
+    /**
+     * Change user administrator state
+     *
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function changeAdministratorState(User $user)
     {
         if ($user->id == Auth::user()->id)
-            return response()->json(['return' => false, 'message' => 'You can\'t delete yourself.']);
+            return response()->json(['return' => false, 'message' => trans('users.create.self-admin-error')]);
         $user->administrator = !$user->administrator;
         if ($user->save())
-            return response()->json(['return' => true, 'message' => 'Administrator state changed.']);
+            return response()->json(['return' => true, 'message' => trans('users.create.admin-success')]);
         else
-            return response()->json(['return' => false, 'message' => 'Error during administrator state change.']);
+            return response()->json(['return' => false, 'message' => trans('users.create.admin-error')]);
     }
-
 
     /**
      * Remove an user.
@@ -61,10 +73,10 @@ class UsersController extends Controller
     public function remove (User $user)
     {
         if ($user->id == Auth::user()->id)
-            return response()->json(['return' => false, 'message' => 'You can\'t delete yourself.']);
+            return response()->json(['return' => false, 'message' => trans('users.create.self-remove-error')]);
         else if ($user->delete())
-            return response()->json(['return' => true, 'message' => 'User deleted.']);
+            return response()->json(['return' => true, 'message' => trans('users.create.remove-success')]);
         else
-            return response()->json(['return' => false, 'message' => 'Error during user deletion.']);
+            return response()->json(['return' => false, 'message' => trans('users.create.remove-error')]);
     }
 }

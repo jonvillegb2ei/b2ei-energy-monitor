@@ -1,4 +1,4 @@
-@component('components.panel', ['title' => 'Application logs', 'controller' => 'AppLogsController'])
+@component('components.panel', ['title' => trans('technician.app-log'), 'controller' => 'AppLogsController'])
 
 
     @component('components.angular-messages')

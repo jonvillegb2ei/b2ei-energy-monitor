@@ -14,7 +14,19 @@ return [
     'name' => 'Energy Monitor',
     'vendor' => 'B2EI',
     'toggle-navigation' => 'Toggle navigation',
+    'toggle-dropdown' => 'Toggle Dropdown',
     'loading' => 'Loading',
+    'refresh' => 'Refresh',
+
+
+    'export-ready' => 'File ready to download.',
+    'export-error' => 'Error during export generation.',
+
+    'profile-updated' => 'Your profile has been updated with success.',
+    'profile-update-error' => 'Error during profile update.',
+
+    'not-implemented-yet' => 'Not implemented yet.',
+    'not-implemented' => 'Not implemented.',
 
     'sidebar' => [
         'online' => 'Online',

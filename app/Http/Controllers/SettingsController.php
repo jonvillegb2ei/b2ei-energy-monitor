@@ -44,19 +44,19 @@ class SettingsController extends Controller
     {
         if(in_array($request->input('dhcp-checkbox', false), ['1', 'on'])) {
             if (SystemUtils::setDHCP())
-                return redirect()->back()->with('set-ip-success', ['message' => 'Network is now in DHCP mode with a fallback ip as 192.168.0.2 (netmask: 255.255.255.0).']);
+                return redirect()->back()->with('set-ip-success', ['message' => trans('settings.ip-config.dhcp-enable')]);
             else
-                return redirect()->back()->with('set-ip-error', ['message' => 'Error while changing network configuration.']);
+                return redirect()->back()->with('set-ip-error', ['message' => trans('settings.ip-config.error')]);
         } else if(in_array($request->input('static-checkbox', false), ['1', 'on'])) {
             $address_ip = $request->input('address_ip');
             $netmask = $request->input('netmask');
             $gateway = $request->input('gateway');
             $dns = $request->input('dns');
             if (SystemUtils::setStatic($address_ip,$netmask,$gateway,$dns))
-                return redirect()->back()->with('set-ip-success', ['message' => 'Network is now in static mode.']);
+                return redirect()->back()->with('set-ip-success', ['message' => trans('settings.ip-config.static-enable')]);
             else
-                return redirect()->back()->with('set-ip-error', ['message' => 'Error while changing network configuration. Verify your configuration (only IPV4 are supported for the moment).']);
-        } else return redirect()->back()->with('set-ip-error', ['message' => 'Unknown action provided.']);
+                return redirect()->back()->with('set-ip-error', ['message' => trans('settings.ip-config.config-error')]);
+        } else return redirect()->back()->with('set-ip-error', ['message' => trans('settings.ip-config.action-error')]);
     }
 
     /**
@@ -67,9 +67,9 @@ class SettingsController extends Controller
     public function shutdown()
     {
         if (SystemUtils::shutdown())
-            return redirect()->back()->with('system-success', ['message' => 'System is going to shutdown.']);
+            return redirect()->back()->with('system-success', ['message' => trans('settings.ip-config.shutdown-success')]);
         else
-            return redirect()->back()->with('system-error', ['message' => 'Error while trying to shutdown device. Try to manually power off the device to recover your system.']);
+            return redirect()->back()->with('system-error', ['message' => trans('settings.ip-config.shutdown-error')]);
     }
 
     /**
@@ -80,9 +80,9 @@ class SettingsController extends Controller
     public function reboot()
     {
         if (SystemUtils::reboot())
-            return redirect()->back()->with('system-success', ['message' => 'System is going to shutdown.']);
+            return redirect()->back()->with('system-success', ['message' => trans('settings.ip-config.reboot-success')]);
         else
-            return redirect()->back()->with('system-error', ['message' => 'Error while trying to shutdown device. Try to manually power off the device to recover your system.']);
+            return redirect()->back()->with('system-error', ['message' => trans('settings.ip-config.reboot-error')]);
     }
 
     /**
@@ -93,9 +93,9 @@ class SettingsController extends Controller
     public function update()
     {
         if (SystemUtils::update())
-            return redirect()->back()->with('system-success', ['message' => 'System will be updating on the next boot.']);
+            return redirect()->back()->with('system-success', ['message' => trans('settings.ip-config.update-success')]);
         else
-            return redirect()->back()->with('system-error', ['message' => 'Error while trying to create require-update file.']);
+            return redirect()->back()->with('system-error', ['message' => trans('settings.ip-config.update-error')]);
     }
 
     /**
@@ -105,7 +105,7 @@ class SettingsController extends Controller
      */
     public function reset()
     {
-        return redirect()->back()->with('system-error', ['message' => 'Not implemented yet.']);
+        return redirect()->back()->with('system-error', ['message' => trans('app.not-implemented-yet')]);
     }
 
 }

@@ -2,7 +2,7 @@
 
 @section('header')
 
-    @component('components.page-header', ['parent' => ['name' => __('Technician'), 'icon' => 'fa-gears', 'url' => route('technician')]])
+    @component('components.page-header', ['parent' => ['name' => trans('technician.title'), 'icon' => 'fa-gears', 'url' => route('technician')]])
         {{__($equipment->name)}}
     @endcomponent
 

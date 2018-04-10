@@ -75,6 +75,8 @@ Route::group(['middleware' => 'auth'], function() {
             Route::post('/edit/{equipment}', 'TechnicianController@editEquipment')->name('technician.equipment.edit');
             Route::get('/detail/{equipment}', 'TechnicianController@detail')->name('technician.equipment.detail');
 
+            Route::get('/view/{equipment}', 'TechnicianController@equipment')->name('technician.equipment.info');
+
 
             Route::get('/variables/{equipment}', 'TechnicianController@variables')->name('technician.equipment.variables');
             Route::post('/variable/edit/{variable}', 'TechnicianController@editVariable')->name('technician.equipment.edit-variable');

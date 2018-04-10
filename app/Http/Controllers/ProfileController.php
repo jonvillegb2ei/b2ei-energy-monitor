@@ -24,9 +24,9 @@ class ProfileController extends Controller
             $user->save();
         }
         if ($return)
-            return redirect()->back()->with('success', ['message' => 'Your profile has been updated with success.']);
+            return redirect()->back()->with('success', ['message' => trans('app.profile-updated')]);
         else
-            return redirect()->back()->withErrors('Error during profile update.');
+            return redirect()->back()->withErrors(trans('app.profile-update-error'));
     }
 
 }

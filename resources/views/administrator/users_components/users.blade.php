@@ -6,7 +6,7 @@
     </div>
 
     @slot('tools')
-        <button ng-click="load()" class="btn btn-info btn-sm" title="Refresh" data-original-title="Refresh"><i class="fa fa-refresh"></i></button>
+        <button ng-click="load()" class="btn btn-info btn-sm" title="{{trans('app.refresh')}}" data-original-title="{{trans('app.refresh')}}"><i class="fa fa-refresh"></i></button>
     @endslot
 
     @slot('title')

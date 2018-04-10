@@ -124997,6 +124997,79 @@ angular.module('EnergyMonitor').controller('EquipmentCreateController', ['$scope
 
 /***/ }),
 
+/***/ "./resources/assets/js/angularjs/Controllers/Technician/EquipmentEditController.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+angular.module('EnergyMonitor').controller('EquipmentEditController', ['$scope', '$http', '$timeout', '$rootScope', function ($scope, $http, $timeout, $rootScope) {
+
+    var base_url = document.head.querySelector('meta[name="base-url"]').content;
+    $scope.messages = { 'error': '', 'success': '', 'detail': '', 'errors': {}, loading: false };
+
+    $scope.setSuccess = function (message, detail) {
+        $scope.messages.error = '';
+        $scope.messages.detail = '';
+        $scope.messages.success = message;
+        $scope.messages.detail = detail;
+        $scope.messages.errors = {};
+        $timeout(function () {
+            $scope.messages.success = '';
+            $scope.messages.detail = '';
+        }, 5000);
+    };
+
+    $scope.setError = function (message, detail) {
+        $scope.messages.success = '';
+        $scope.messages.detail = '';
+        $scope.messages.error = message;
+        $scope.messages.detail = detail;
+        $timeout(function () {
+            $scope.messages.error = '';
+            $scope.messages.detail = '';
+        }, 5000);
+    };
+
+    $scope.setLoading = function (state) {
+        $scope.messages.loading = state;
+    };
+
+    $scope.init = function (id) {
+        $scope.id = id;
+        $scope.load();
+    };
+
+    $scope.data = {};
+
+    $scope.load = function () {
+        $http.get(base_url + '/admin/technician/view/' + $scope.id).then(function (response) {
+            $scope.data = response.data;
+        }, function (response) {
+            $scope.data = {};
+            if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
+            if (typeof response.data.errors !== 'undefined') $scope.messages.errors = response.data.errors;
+        });
+    };
+
+    $scope.edit = function () {
+        $scope.setLoading(true);
+        $http.post(base_url + '/admin/technician/edit/' + $scope.id, $scope.data).then(function (response) {
+            $scope.setLoading(false);
+            if (response.data.return) {
+                $scope.setSuccess(response.data.message, response.data.output);
+                $scope.load();
+            } else $scope.setError(response.data.message, response.data.output);
+        }, function (response) {
+            $scope.setLoading(false);
+            if (typeof response.data.message !== 'undefined') $scope.setError(response.data.message);
+            if (typeof response.data.errors !== 'undefined') $scope.messages.errors = response.data.errors;
+        });
+    };
+}]);
+
+/***/ }),
+
 /***/ "./resources/assets/js/angularjs/Controllers/Technician/EquipmentsController.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -125648,6 +125721,7 @@ angular.module('EnergyMonitor', ['angular-loading-bar', 'ngAnimate', 'ui.bootstr
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Users/CreateUserController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Users/TableUserController.js");
 
+__webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/EquipmentEditController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/ModbusClientController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/AppLogsController.js");
 __webpack_require__("./resources/assets/js/angularjs/Controllers/Technician/SysLogsController.js");

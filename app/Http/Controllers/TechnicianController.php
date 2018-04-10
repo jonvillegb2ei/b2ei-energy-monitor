@@ -25,24 +25,14 @@ class TechnicianController extends Controller
      */
     public function index ()
     {
-        $products = Product::all();
-        $equipments = Equipment::all();
-
-        $process = new Process ('tail -n 100 ' . storage_path('logs/laravel.log'));
-        $process->run();
-        $applogs = $process->isSuccessful() ? $process->getOutput() : "Error while parsing application logs.";
-
-        $process = new Process ('tail -n 100 /var/log/syslog');
-        $process->run();
-        $syslogs = $process->isSuccessful() ? $process->getOutput() : "Error while parsing system logs.";
-
-        $process = new Process ('dmesg');
-        $process->run();
-        $dmesg = $process->isSuccessful() ? $process->getOutput() : "Error while parsing dmesg logs.";
-
-        return response()->view('administrator.technician', ['equipments' => $equipments, 'products' => $products, 'syslogs' => $syslogs, 'applogs' => $applogs, 'dmesg' => $dmesg]);
+        return response()->view('administrator.technician', ['products' => Product::all()]);
     }
 
+    /**
+     * Get equipments table data with pagination
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public function equipments() {
         $equipments = Equipment::paginate(8);
         foreach($equipments as $equipment) {
@@ -55,23 +45,42 @@ class TechnicianController extends Controller
         return $equipments;
     }
 
+    /**
+     * Get equipment data
+     *
+     * @param Equipment $equipment
+     * @return Equipment
+     */
+    public function equipment(Equipment $equipment) {
+        return $equipment;
+    }
 
+    /**
+     * Get app log file content
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function applogs()
     {
         $process = new Process ('tail -n 100 ' . storage_path('logs/laravel.log'));
         $process->run();
-        return response()->json(['return' => $process->isSuccessful(), 'content' => $process->isSuccessful() ? $process->getOutput() : "Error while parsing application logs."]);
+        return response()->json(['return' => $process->isSuccessful(), 'content' => $process->isSuccessful() ? $process->getOutput() : trans('technician.app-log-error')]);
     }
 
+    /**
+     * Get system log file content
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function syslogs()
     {
         $process = new Process ('tail -n 100 /var/log/syslog');
         $process->run();
-        $syslogs = $process->isSuccessful() ? $process->getOutput() : "Error while parsing system logs.";
+        $syslogs = $process->isSuccessful() ? $process->getOutput() : trans('technician.system-log-error');
 
         $process = new Process ('dmesg');
         $process->run();
-        $dmesg = $process->isSuccessful() ? $process->getOutput() : "Error while parsing dmesg logs.";
+        $dmesg = $process->isSuccessful() ? $process->getOutput() : trans('technician.dmesg-log-error');
 
         return response()->json(['return' => true, 'syslogs' => $syslogs, 'dmesg' => $dmesg]);
     }
@@ -99,9 +108,9 @@ class TechnicianController extends Controller
         $process = new Process ('ping -c 3 ' . escapeshellarg($address));
         $process->run();
         if (!$process->isSuccessful())
-            return response()->json(['return' => false, 'message' => 'Error during ping.', 'output' => $process->getOutput()]);
+            return response()->json(['return' => false, 'message' => trans('technician.ping.error'), 'output' => $process->getOutput()]);
         else
-            return response()->json(['return' => true, 'message' => 'Device reply with a pong.', 'output' => $process->getOutput()]);
+            return response()->json(['return' => true, 'message' => trans('technician.ping.success'), 'output' => $process->getOutput()]);
     }
 
     /**
@@ -116,23 +125,35 @@ class TechnicianController extends Controller
         $process = new Process ('ping -c 3 ' . escapeshellarg($address));
         $process->run();
         if (!$process->isSuccessful())
-            return response()->json(['return' => false, 'message' => 'Error during ping.', 'output' => $process->getOutput()]);
+            return response()->json(['return' => false, 'message' => trans('technician.ping.error'), 'output' => $process->getOutput()]);
         else
-            return response()->json(['return' => true, 'message' => 'Device reply with a pong.', 'output' => $process->getOutput()]);
+            return response()->json(['return' => true, 'message' => trans('technician.ping.success'), 'output' => $process->getOutput()]);
     }
 
-
+    /**
+     * Get equipment variables
+     *
+     * @param Equipment $equipment
+     * @return Variable[]|\Illuminate\Database\Eloquent\Collection|mixed
+     */
     public function variables(Equipment $equipment)
     {
         return $equipment->variables;
     }
 
+    /**
+     * Edit variable log_expiration and log_interval
+     *
+     * @param EditVariableRequest $request
+     * @param Variable $variable
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function editVariable(EditVariableRequest $request, Variable $variable)
     {
         $variable->log_expiration = $request->input('log_expiration', 0);
         $variable->log_interval = $request->input('log_interval', 0);
-        if ($variable->save()) return response()->json(['return' => true, 'message' => 'Variable edited']);
-        else return response()->json(['return' => false, 'message' => 'Can\'t edit variable.']);
+        if ($variable->save()) return response()->json(['return' => true, 'message' => trans('technician.variable.success')]);
+        else return response()->json(['return' => false, 'message' => trans('technician.variable.error')]);
     }
 
     /**
@@ -150,9 +171,9 @@ class TechnicianController extends Controller
         $equipment->slave = $request->input('slave');
         $equipment->localisation = $request->input('localisation');
         if ($equipment->save())
-            return redirect()->back()->with('edit-success', ['message' => 'Equipment edited with success.']);
+            return response()->json(['return' => true, 'message' => trans('technician.equipment-edit.success')]);
         else
-            return redirect()->back()->with('edit-error', ['message' => 'Error during equipment update.']);
+            return response()->json(['return' => false, 'message' => trans('technician.equipment-edit.error')]);
     }
 
     /**
@@ -164,11 +185,11 @@ class TechnicianController extends Controller
     public function remove (Equipment $equipment)
     {
         if ($equipment->delete())
-            return redirect()->route('technician')->with('equipment-success', ['message' => 'Equipment removed with success.', 'output' => '']);
+            return redirect()->route('technician')->with('equipment-success', ['message' => trans('technician.remove-success'), 'output' => '']);
         else
-            return redirect()->back()->with('remove-error', ['message' => 'Error during equipment deletion.']);
+            return redirect()->back()->with('remove-error', ['message' => trans('technician.remove-error')]);
     }
-// App\Models\Equipment::whereId(4)->first()
+
     /**
      * Add an equipment.
      *
@@ -181,9 +202,9 @@ class TechnicianController extends Controller
         if ($equipment instanceof Equipment) {
             $equipment = Equipment::whereId($equipment->id)->first();
             $equipment->createVariables();
-            return response()->json(['return'=>true, 'message' => 'Equipment created with success.']);
+            return response()->json(['return'=>true, 'message' => trans('technician.equipment-create.success')]);
         } else
-            return response()->json(['return'=>false, 'message' => 'Error during equipment creation.']);
+            return response()->json(['return'=>false, 'message' => trans('technician.equipment-create.error')]);
     }
 
     /**
@@ -197,11 +218,11 @@ class TechnicianController extends Controller
         try {
             $output = $equipment->test();
             if (!$output)
-                return response()->json(['return' => false, 'message' => 'Error during equipment test.', 'output' => '']);
+                return response()->json(['return' => false, 'message' => trans('technician.test-error'), 'output' => '']);
             else
-                return response()->json(['return' => true, 'message' => 'Test output : ', 'output' => $output]);
+                return response()->json(['return' => true, 'message' => trans('technician.test-success'), 'output' => $output]);
         } catch (\Exception $e) {
-            return response()->json(['return' => false, 'message' => 'Error during equipment test.', 'output' => $e->getMessage()]);
+            return response()->json(['return' => false, 'message' => trans('technician.test-error'), 'output' => $e->getMessage()]);
         }
     }
 
@@ -223,16 +244,16 @@ class TechnicianController extends Controller
             $client->connect($address_ip, $port);
             $response = $client->readDeviceIdentification($slave, $mei_type, $device_id);
             if ($response->success())
-                return response()->json(['return' => true, 'message' => "Device reply with identification data.",
+                return response()->json(['return' => true, 'message' => trans('technician.identify.success'),
                     'output' => $response->getObjects()->map(function (ModbusDataCollection $object) {
                         return $object->asIdentifierString();
                     })->implode(', ') ]);
             else if ($response->hasException())
-                return response()->json(['return' => false, 'message' => "Can't identify device.", 'output' => $response->getException()->getMessage()]);
+                return response()->json(['return' => false, 'message' => trans('technician.identify.error'), 'output' => $response->getException()->getMessage()]);
             else
-                return response()->json(['return' => false, 'message' => "Can't identify device.", 'output' => '']);
+                return response()->json(['return' => false, 'message' => trans('technician.identify.error'), 'output' => '']);
         } catch (\Exception $e) {
-            return response()->json(['return' => false, 'message' => "Can't identify device.", 'output' => '']);
+            return response()->json(['return' => false, 'message' => trans('technician.identify.error'), 'output' => '']);
         }
     }
 
@@ -259,13 +280,13 @@ class TechnicianController extends Controller
                     $value = $response->getData()->withEndianness(false)->readUint16($i);
                     $registers[$i] = ['index' => $i+1, 'value'=> $value, 'class_name'=> 'has-success'];
                 }
-                return response()->json(['return' => true, 'registers' => $registers, 'message' => 'Device reply with data.', 'output' => 'Data length: ' . ($response->getData()->count() / 2)]);
+                return response()->json(['return' => true, 'registers' => $registers, 'message' => trans('technician.modbus-client.success'), 'output' => trans('technician.modbus-client.data-length') . ($response->getData()->count() / 2)]);
             } else if ($response->hasException())
-                return response()->json(['return' => false, 'registers' => $registers, 'message' => 'Can\'t read registers.', 'output' => $response->getException()->getMessage()]);
+                return response()->json(['return' => false, 'registers' => $registers, 'message' => trans('technician.modbus-client.error'), 'output' => $response->getException()->getMessage()]);
             else
-                return response()->json(['return' => false, 'registers' => $registers, 'message' => 'Can\'t read registers.', 'output' => 'Unknown error.']);
+                return response()->json(['return' => false, 'registers' => $registers, 'message' => trans('technician.modbus-client.error'), 'output' => trans('technician.unknown-error')]);
         } catch (\Exception $e) {
-            return response()->json(['return' => false, 'registers' => $registers, 'message' => 'Can\'t read registers.', 'output' => $e->getMessage()]);
+            return response()->json(['return' => false, 'registers' => $registers, 'message' => trans('technician.modbus-client.error'), 'output' => $e->getMessage()]);
         }
     }
 }

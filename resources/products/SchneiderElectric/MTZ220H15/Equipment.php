@@ -19,7 +19,6 @@ use App\Contracts\Equipment as EquipmentInterface;
 class Equipment extends EquipmentModel implements EquipmentInterface
 {
 
-    private $charts = null;
 
     public function createVariables ()
     {
@@ -41,6 +40,10 @@ class Equipment extends EquipmentModel implements EquipmentInterface
         $this->createVariable('voltage2N', 'V', $fiveMinute, $oneYear);
         $this->createVariable('voltage3N', 'V', $fiveMinute, $oneYear);
         $this->createVariable('frequency', 'Hz', $fiveMinute, $oneYear);
+        $this->createVariable('power_factor1', 'Pi', $fiveMinute, $oneYear);
+        $this->createVariable('power_factor2', 'Pi', $fiveMinute, $oneYear);
+        $this->createVariable('power_factor3', 'Pi', $fiveMinute, $oneYear);
+        $this->createVariable('power_factor', 'Pi', $fiveMinute, $oneYear);
         $this->createVariable('active_power1', 'kW', $fiftyMinutes, $fiveYears);
         $this->createVariable('active_power2', 'kW', $fiftyMinutes, $fiveYears);
         $this->createVariable('active_power3', 'kW', $fiftyMinutes, $fiveYears);
@@ -65,36 +68,45 @@ class Equipment extends EquipmentModel implements EquipmentInterface
         $response = $client -> readHoldingRegisters($this->slave, 31999, 124);
         $endianness = false;
         if ($response->success()) {
-            $states = $response->getData()->withEndianness($endianness)->readBitmap(0, ModbusDataCollection::BIT_16);
+            $states = $response->getData()->withEndianness($endianness)->readBitmap(2, ModbusDataCollection::BIT_16);
             $this->updateVariable('state', $states[0] ? 1 : 0);
             $this->updateVariable('fault', ($states[1] or $states[2]) ? 1 : 0);
-            $this->updateVariable('current1', $response->getData()->withEndianness($endianness)->readFloat32(27));
-            $this->updateVariable('current2', $response->getData()->withEndianness($endianness)->readFloat32(29));
-            $this->updateVariable('current3', $response->getData()->withEndianness($endianness)->readFloat32(31));
-            $this->updateVariable('currentN', $response->getData()->withEndianness($endianness)->readFloat32(33));
-            $this->updateVariable('voltage12', $response->getData()->withEndianness($endianness)->readFloat32(55));
-            $this->updateVariable('voltage23', $response->getData()->withEndianness($endianness)->readFloat32(57));
-            $this->updateVariable('voltage31', $response->getData()->withEndianness($endianness)->readFloat32(59));
-            $this->updateVariable('voltage1N', $response->getData()->withEndianness($endianness)->readFloat32(61));
-            $this->updateVariable('voltage2N', $response->getData()->withEndianness($endianness)->readFloat32(63));
-            $this->updateVariable('voltage3N', $response->getData()->withEndianness($endianness)->readFloat32(65));
-            $this->updateVariable('frequency', $response->getData()->withEndianness($endianness)->readFloat32(67));
-            $this->updateVariable('active_power1', $response->getData()->withEndianness($endianness)->readFloat32(71));
-            $this->updateVariable('active_power2', $response->getData()->withEndianness($endianness)->readFloat32(73));
-            $this->updateVariable('active_power3', $response->getData()->withEndianness($endianness)->readFloat32(75));
-            $this->updateVariable('active_power', $response->getData()->withEndianness($endianness)->readFloat32(77));
-            $this->updateVariable('reactive_power1', $response->getData()->withEndianness($endianness)->readFloat32(79));
-            $this->updateVariable('reactive_power2', $response->getData()->withEndianness($endianness)->readFloat32(81));
-            $this->updateVariable('reactive_power3', $response->getData()->withEndianness($endianness)->readFloat32(83));
-            $this->updateVariable('reactive_power', $response->getData()->withEndianness($endianness)->readFloat32(85));
-            $this->updateVariable('apparent_power1', $response->getData()->withEndianness($endianness)->readFloat32(87));
-            $this->updateVariable('apparent_power2', $response->getData()->withEndianness($endianness)->readFloat32(89));
-            $this->updateVariable('apparent_power3', $response->getData()->withEndianness($endianness)->readFloat32(91));
-            $this->updateVariable('apparent_power', $response->getData()->withEndianness($endianness)->readFloat32(93));
-            $this->updateVariable('active_energy', $response->getData()->withEndianness($endianness)->readInt64(95));
-            $this->updateVariable('reactive_energy', $response->getData()->withEndianness($endianness)->readInt64(99));
+            $this->updateVariable('current1', $response->getData()->withEndianness($endianness)->readFloat32(28));
+            $this->updateVariable('current2', $response->getData()->withEndianness($endianness)->readFloat32(30));
+            $this->updateVariable('current3', $response->getData()->withEndianness($endianness)->readFloat32(32));
+            $this->updateVariable('currentN', $response->getData()->withEndianness($endianness)->readFloat32(34));
+            $this->updateVariable('voltage12', $response->getData()->withEndianness($endianness)->readFloat32(56));
+            $this->updateVariable('voltage23', $response->getData()->withEndianness($endianness)->readFloat32(58));
+            $this->updateVariable('voltage31', $response->getData()->withEndianness($endianness)->readFloat32(60));
+            $this->updateVariable('voltage1N', $response->getData()->withEndianness($endianness)->readFloat32(62));
+            $this->updateVariable('voltage2N', $response->getData()->withEndianness($endianness)->readFloat32(64));
+            $this->updateVariable('voltage3N', $response->getData()->withEndianness($endianness)->readFloat32(66));
+            $this->updateVariable('frequency', $response->getData()->withEndianness($endianness)->readFloat32(68));
+            $this->updateVariable('active_power1', $response->getData()->withEndianness($endianness)->readFloat32(72));
+            $this->updateVariable('active_power2', $response->getData()->withEndianness($endianness)->readFloat32(74));
+            $this->updateVariable('active_power3', $response->getData()->withEndianness($endianness)->readFloat32(76));
+            $this->updateVariable('active_power', $response->getData()->withEndianness($endianness)->readFloat32(78));
+            $this->updateVariable('reactive_power1', $response->getData()->withEndianness($endianness)->readFloat32(80));
+            $this->updateVariable('reactive_power2', $response->getData()->withEndianness($endianness)->readFloat32(82));
+            $this->updateVariable('reactive_power3', $response->getData()->withEndianness($endianness)->readFloat32(84));
+            $this->updateVariable('reactive_power', $response->getData()->withEndianness($endianness)->readFloat32(86));
+            $this->updateVariable('apparent_power1', $response->getData()->withEndianness($endianness)->readFloat32(88));
+            $this->updateVariable('apparent_power2', $response->getData()->withEndianness($endianness)->readFloat32(90));
+            $this->updateVariable('apparent_power3', $response->getData()->withEndianness($endianness)->readFloat32(92));
+            $this->updateVariable('apparent_power', $response->getData()->withEndianness($endianness)->readFloat32(94));
+            $this->updateVariable('active_energy', $response->getData()->withEndianness($endianness)->readInt64(96));
+            $this->updateVariable('reactive_energy', $response->getData()->withEndianness($endianness)->readInt64(100));
             $this->updateVariable('apparent_energy', $response->getData()->withEndianness($endianness)->readInt64(120));
         }
+        $response = $client -> readHoldingRegisters($this->slave, 32199, 14);
+        $endianness = false;
+        if ($response->success()) {
+            $this->updateVariable('power_factor1', $response->getData()->withEndianness($endianness)->readFloat32(6));
+            $this->updateVariable('power_factor2', $response->getData()->withEndianness($endianness)->readFloat32(8));
+            $this->updateVariable('power_factor3', $response->getData()->withEndianness($endianness)->readFloat32(10));
+            $this->updateVariable('power_factor', $response->getData()->withEndianness($endianness)->readFloat32(12));
+        }
+
     }
 
     public function getWidgetVariablesAttribute()
@@ -123,6 +135,9 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                     $this->variables()->whereName('voltage12')->first()->printable_name,
                     $this->variables()->whereName('voltage23')->first()->printable_name,
                     $this->variables()->whereName('voltage31')->first()->printable_name,
+                    $this->variables()->whereName('voltage1N')->first()->printable_name,
+                    $this->variables()->whereName('voltage2N')->first()->printable_name,
+                    $this->variables()->whereName('voltage3N')->first()->printable_name,
                 ],
                 'data' => function(Carbon $start = null, Carbon $end = null) {
                     if (is_null($start))
@@ -135,7 +150,10 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                     $voltage12Data = $this->variables()->whereName('voltage12')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
                     $voltage23Data = $this->variables()->whereName('voltage23')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
                     $voltage31Data = $this->variables()->whereName('voltage31')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
-                    return [$voltage12Data, $voltage23Data, $voltage31Data ];
+                    $voltage1NData = $this->variables()->whereName('voltage1N')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $voltage2NData = $this->variables()->whereName('voltage2N')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $voltage3NData = $this->variables()->whereName('voltage3N')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    return [$voltage12Data, $voltage23Data, $voltage31Data, $voltage1NData, $voltage2NData, $voltage3NData ];
                 }
             ],
             'current' => [
@@ -200,6 +218,38 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                     return [$activePowerData, $activePowerData1, $activePowerData2, $activePowerData3 ];
                 }
             ],
+
+            'power_factor' => [
+                'id' => 'power_factor',
+                'type' =>'line',
+                'title' => 'Power factor',
+                'label' =>'Pi',
+                'options' => [
+                    'responsive' => true,
+                    'legend' => [ 'display' => true, 'position' => 'top', ],
+                    'scales' => [ 'xAxes' => [ [ 'type' => 'time', 'time' => [ 'displayFormats' => [ 'quarter' => 'MMM YYYY', ], ], ],], ],
+                ],
+                'series' => [
+                    $this->variables()->whereName('power_factor')->first()->printable_name,
+                    $this->variables()->whereName('power_factor1')->first()->printable_name,
+                    $this->variables()->whereName('power_factor2')->first()->printable_name,
+                    $this->variables()->whereName('power_factor3')->first()->printable_name,
+                ],
+                'data' => function(Carbon $start = null, Carbon $end = null) {
+                    if (is_null($start))
+                        [$start, $end] = [Carbon::now()->subHours(24), Carbon::now()];
+                    if (is_null($end)) {
+                        $start = $start -> startOfDay();
+                        $end = clone $start;
+                        $end = $end->addHours(24);
+                    }
+                    $powerFactor = $this->variables()->whereName('power_factor')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $powerFactor1 = $this->variables()->whereName('power_factor1')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $powerFactor2 = $this->variables()->whereName('power_factor2')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $powerFactor3 = $this->variables()->whereName('power_factor3')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    return [$powerFactor, $powerFactor1, $powerFactor2, $powerFactor3 ];
+                }
+            ],
         ];
     }
 
@@ -219,72 +269,97 @@ class Equipment extends EquipmentModel implements EquipmentInterface
             throw $response->getException();
         if (!$response->success())
             return false;
-        $states = $response->getData()->withEndianness($endianness)->readBitmap(1, ModbusDataCollection::BIT_16);
+        $states = $response->getData()->withEndianness($endianness)->readBitmap(2, ModbusDataCollection::BIT_16);
         $output = sprintf("states: %s %s", $states[0] ? 'ON' : 'OFF', ($states[1] or $states[2]) ? 'FAULT' : 'OK');
-        $current = $response->getData()->withEndianness($endianness)->readFloat32(27);
+
+
+        $current = $response->getData()->withEndianness($endianness)->readFloat32(28);
         $output .= sprintf("\ncurrent 1: %.2f A", $current);
-        $current = $response->getData()->withEndianness($endianness)->readFloat32(29);
+        $current = $response->getData()->withEndianness($endianness)->readFloat32(30);
         $output .= sprintf("\ncurrent 2: %.2f A", $current);
-        $current = $response->getData()->withEndianness($endianness)->readFloat32(31);
+        $current = $response->getData()->withEndianness($endianness)->readFloat32(32);
         $output .= sprintf("\ncurrent 3: %.2f A", $current);
-        $current = $response->getData()->withEndianness($endianness)->readFloat32(33);
+        $current = $response->getData()->withEndianness($endianness)->readFloat32(34);
         $output .= sprintf("\ncurrent N: %.2f A", $current);
-        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(55);
+
+        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(56);
         $output .= sprintf("\nvoltage 12: %.2f VAC", $voltage);
-        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(57);
+        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(58);
         $output .= sprintf("\nvoltage 23: %.2f VAC", $voltage);
-        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(59);
+        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(60);
         $output .= sprintf("\nvoltage 31: %.2f VAC", $voltage);
-        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(61);
+
+        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(62);
         $output .= sprintf("\nvoltage 1N: %.2f VAC", $voltage);
-        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(63);
+        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(64);
         $output .= sprintf("\nvoltage 2N: %.2f VAC", $voltage);
-        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(65);
+        $voltage = $response->getData()->withEndianness($endianness)->readFloat32(66);
         $output .= sprintf("\nvoltage 3N: %.2f VAC", $voltage);
-        $frequency = $response->getData()->withEndianness($endianness)->readFloat32(67);
-        $output .= sprintf("\nfrequency: %.2f Hz", $frequency / 10);
-        $frequency = $response->getData()->withEndianness($endianness)->readFloat32(69);
-        $output .= sprintf("\nmax frequency: %.2f Hz", $frequency / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(71);
+
+        $frequency = $response->getData()->withEndianness($endianness)->readFloat32(68);
+        $output .= sprintf("\nfrequency: %.2f Hz", $frequency);
+        $frequency = $response->getData()->withEndianness($endianness)->readFloat32(70);
+        $output .= sprintf("\nmax frequency: %.2f Hz", $frequency);
+
+
+
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(72);
         $output .= sprintf("\nactive power L1: %.2f kW", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(73);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(74);
         $output .= sprintf("\nactive power L2: %.2f kW", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(75);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(76);
         $output .= sprintf("\nactive power L3: %.2f kW", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(77);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(78);
         $output .= sprintf("\nactive power total: %.2f kW", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(79);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(80);
         $output .= sprintf("\nreactive power L1: %.2f kVAR", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(81);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(82);
         $output .= sprintf("\nreactive power L2: %.2f kVAR", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(83);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(84);
         $output .= sprintf("\nreactive power L3: %.2f kVAR", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(85);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(86);
         $output .= sprintf("\nreactive power total: %.2f kVAR", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(87);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(88);
         $output .= sprintf("\napparent power L1: %.2f kVA", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(89);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(90);
         $output .= sprintf("\napparent power L2: %.2f kVA", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(91);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(92);
         $output .= sprintf("\napparent power L3: %.2f kVA", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readFloat32(93);
+        $power = $response->getData()->withEndianness($endianness)->readFloat32(94);
         $output .= sprintf("\napparent power total: %.2f kVA", $power / 10);
 
-        $power = $response->getData()->withEndianness($endianness)->readInt64(95);
+        $power = $response->getData()->withEndianness($endianness)->readInt64(96);
         $output .= sprintf("\nactive energy: %.2f kWh", $power);
 
-        $power = $response->getData()->withEndianness($endianness)->readInt64(99);
+        $power = $response->getData()->withEndianness($endianness)->readInt64(100);
         $output .= sprintf("\nreactive energy: %.2f kWh", $power);
-        $power = $response->getData()->withEndianness($endianness)->readInt64(103);
+        $power = $response->getData()->withEndianness($endianness)->readInt64(104);
         $output .= sprintf("\nactive energy counted positively: %.2f kWh", $power);
-        $power = $response->getData()->withEndianness($endianness)->readInt64(107);
+        $power = $response->getData()->withEndianness($endianness)->readInt64(108);
         $output .= sprintf("\nactive energy counted negatively: %.2f kWh", $power);
-        $power = $response->getData()->withEndianness($endianness)->readInt64(111);
+        $power = $response->getData()->withEndianness($endianness)->readInt64(112);
         $output .= sprintf("\nreactive energy counted positively: %.2f kWh", $power);
-        $power = $response->getData()->withEndianness($endianness)->readInt64(115);
+        $power = $response->getData()->withEndianness($endianness)->readInt64(116);
         $output .= sprintf("\nreactive energy counted negatively: %.2f kWh", $power);
-        $power = $response->getData()->withEndianness($endianness)->readInt64(119);
+        $power = $response->getData()->withEndianness($endianness)->readInt64(120);
         $output .= sprintf("\ntotal apparent energy: %.2f kWh", $power);
+
+        $response = $client -> readHoldingRegisters($this->slave == 0 ? 255 : $this->slave, 32199, 14);
+        $endianness = false;
+        if ($response->hasException())
+            throw $response->getException();
+        if (!$response->success())
+            return false;
+
+        $powerFactor = $response->getData()->withEndianness($endianness)->readFloat32(6);
+        $output .= sprintf("\npower factor1: %.2f Pi", $powerFactor);
+        $powerFactor = $response->getData()->withEndianness($endianness)->readFloat32(8);
+        $output .= sprintf("\npower factor2: %.2f Pi", $powerFactor);
+        $powerFactor = $response->getData()->withEndianness($endianness)->readFloat32(10);
+        $output .= sprintf("\npower factor3: %.2f Pi", $powerFactor);
+        $powerFactor = $response->getData()->withEndianness($endianness)->readFloat32(12);
+        $output .= sprintf("\npower factor: %.2f Pi", $powerFactor);
+
         return $output;
     }
 

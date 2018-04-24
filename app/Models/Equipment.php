@@ -189,9 +189,9 @@ class Equipment extends Model implements EquipmentInterface
 
     public function getPictureUrlAttribute() {
         try {
-            return url('/images/product/NSX.png');
+            return $this->product->picture_url;
         } catch(\Exception $error) {
-            return '';
+            return url('/images/product/NSX.png');
         }// TO DO
     }
 

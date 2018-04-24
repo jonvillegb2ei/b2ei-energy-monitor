@@ -124614,11 +124614,10 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
     };
 
     $scope.chart = { variables: [], date: { startDate: new Date(), endDate: new Date() } };
-    $scope.chart.date.startDate.setFullYear($scope.chart.date.startDate.getFullYear() - 1);
+    $scope.chart.date.startDate.setDate($scope.chart.date.startDate.getDate() - 3);
 
     $scope.init = function (id, chart_variables) {
         $scope.equipment_id = id;
-
         $scope.chart.variables = chart_variables;
         for (var i = 0; i < $scope.chart.variables.length; i++) {
             $scope.chart.variables[i] = $scope.chart.variables[i] + '';
@@ -124857,7 +124856,8 @@ angular.module('EnergyMonitor').controller('ExportController', ['$scope', '$http
         $scope.messages.loading = state;
     };
 
-    $scope.data = { variables: [], date: { startDate: null, endDate: null } };
+    $scope.data = { variables: [], date: { startDate: new Date(), endDate: new Date() } };
+    $scope.data.date.startDate.setDate($scope.data.date.startDate.getDate() - 3);
 
     $scope.init = function (id) {
         $scope.equipment_id = id;

@@ -33,15 +33,13 @@ angular.module('EnergyMonitor').controller('ChartController', ['$scope', '$http'
 
 
     $scope.chart = {variables: [], date: {startDate: new Date(), endDate: new Date()}};
-    $scope.chart.date.startDate.setFullYear( $scope.chart.date.startDate.getFullYear() - 1 );
+    $scope.chart.date.startDate.setDate( $scope.chart.date.startDate.getDate() - 3 );
 
     $scope.init = (id, chart_variables) => {
         $scope.equipment_id = id;
-
         $scope.chart.variables = chart_variables;
         for (let i = 0; i < $scope.chart.variables.length;i++)
             $scope.chart.variables[i] = $scope.chart.variables[i] + '';
-
         $scope.loadChart();
     };
 

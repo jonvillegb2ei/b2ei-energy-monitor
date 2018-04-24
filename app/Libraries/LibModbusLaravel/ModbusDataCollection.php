@@ -27,7 +27,8 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
 
     private function getBytes(int $offset = 0, int $length = 1)
     {
-        $offset = ($offset * 2);
+        if ($offset > 0) $offset = (($offset-1) * 2);
+        else  $offset = (($offset) * 2);
         if ($offset + $length > $this->count())
             throw new InvalidDataLength();
         return self::applyEndianness($this->slice($offset, $length)->values(), $this->endianness);

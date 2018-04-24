@@ -38,7 +38,13 @@ class RefreshVariableValues extends Command
     public function handle()
     {
         Equipment::get()->each(function ($equipment) {
-            $equipment->refresh();
+            try {
+                $this->line(sprintf('Refreshing equipment %s (%s)',$equipment->id,$equipment->name));
+                $equipment->refresh();
+            } catch (\Exception $error) {
+                return null;
+            }
         });
+        return null;
     }
 }

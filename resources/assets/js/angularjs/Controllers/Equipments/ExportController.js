@@ -32,7 +32,8 @@ angular.module('EnergyMonitor').controller('ExportController', ['$scope', '$http
         $scope.messages.loading = state;
     };
 
-    $scope.data = {variables: [], date: {startDate: null, endDate: null}};
+    $scope.data = {variables: [], date: {startDate: new Date(), endDate: new Date() }};
+    $scope.data.date.startDate.setDate( $scope.data.date.startDate.getDate() - 3 );
 
     $scope.init = (id) => {
         $scope.equipment_id = id;

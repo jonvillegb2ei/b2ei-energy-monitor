@@ -33,6 +33,7 @@ class Product extends Model
         'code', 'brand', 'reference', 'class_name', 'version'
     ];
 
+    protected $appends = ['picture_url'];
     /**
      * Model is timestamped
      *
@@ -49,6 +50,14 @@ class Product extends Model
 
     public function equipments() {
         return $this->hasMany(Equipment::class);
+    }
+
+
+    public function getPictureUrlAttribute()
+    {
+        $file = sprintf('images/product/%s', $this->picture);
+        if (file_exists(public_path($file))) return url($file);
+        return url('images/product/default.png');
     }
 
 

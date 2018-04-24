@@ -37,7 +37,7 @@ class Log extends Model
      *
      * @var string
      */
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * Date columns.

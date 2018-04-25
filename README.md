@@ -8,6 +8,7 @@ Don't use B2EI energy monitor at the moment, it's a beta version with some bugs,
 
 
 ### Next steps : 
+ - Add RS485 support with https://www.mikroe.com/rs485-2-click
  - Bug correction, interface finalisation and tests creation.
  - Add a charts module to create custom charts with one or many equipments.
  - Add translation support (All texts are in english, we want to add french, german and spanish support)

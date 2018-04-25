@@ -22,6 +22,8 @@ Don't use B2EI energy monitor at the moment, it's a beta version with some bugs,
  
  
  You can download a Rasberry pi Image based on raspbian : http://www.b2ei.com/public/b2ei-energy-monitor.img.gz
+ 
+ To install it on your SD card use the following command (don't forget to replace /dev/mmcblk0 with the correct devise path): 
  ```bash
  gunzip --stdout b2ei-energy-monitor.img.gz | dd bs=4M of=/dev/mmcblk0
  ```

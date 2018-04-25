@@ -6,6 +6,11 @@ Developed by  [B2EI](http://www.b2ei.com) with Laravel, angularjs and some other
 
 Don't use B2EI energy monitor at the moment, it's a beta version with some bugs, we will correct them as soon as possible.
 
+You can download a Rasberry pi Image based on raspbian : http://www.b2ei.com/public/b2ei-energy-monitor.img.gz
+```bash
+gunzip --stdout b2ei-energy-monitor.img.gz | dd bs=4M of=/dev/mmcblk0
+```
+
 ### Next steps : 
  - Bug correction, interface finalisation and tests creation.
  - Add a charts module to create custom charts with one or many equipments.

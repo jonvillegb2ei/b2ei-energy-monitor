@@ -82,9 +82,6 @@ Don't use B2EI energy monitor at the moment, it's a beta version with some bugs,
  ![Raspberry Pi](https://github.com/jonvillegb2ei/b2ei-energy-monitor/raw/master/readme/photos/IMG_0078.jpg)
  ![Raspberry Pi](https://github.com/jonvillegb2ei/b2ei-energy-monitor/raw/master/readme/photos/IMG_0079.jpg)
  ![Raspberry Pi](https://github.com/jonvillegb2ei/b2ei-energy-monitor/raw/master/readme/photos/IMG_0080.jpg)
- ![Raspberry Pi](https://github.com/jonvillegb2ei/b2ei-energy-monitor/raw/master/readme/photos/IMG_0081.jpg)
- ![Raspberry Pi](https://github.com/jonvillegb2ei/b2ei-energy-monitor/raw/master/readme/photos/IMG_0082.jpg)
- ![Raspberry Pi](https://github.com/jonvillegb2ei/b2ei-energy-monitor/raw/master/readme/photos/IMG_0083.jpg)
 
  
 

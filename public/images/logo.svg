@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xml:lang="fr"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="87.5"
+   height="82.5"
+   viewBox="0 0 88.137001 83.532997"
+   version="1.1"
+   id="svg8">
+  <path
+     style="fill:#ff7900;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     d="m 35.603316,81.40523 3.0121,-15.40163 -13.89143,-4.44463 22.97373,-19.783 -11.46364,17.36057 13.20751,3.35483 z"
+     id="eclair"/>
+  <path
+     style="fill-opacity:0;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-opacity:1"
+     d="M 63.355966,32.4947 V 1 h 13.30271 v 22.80125"
+     id="cheminee"/>
+  <path
+     style="fill-opacity:0;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     d="M 35.603316,81.40523 H 80.306751 V 38.65329 l 6.11079,-20.6843 -32.11976,20.6087 5.68611,-20.60997 L 27.523974,38.95439 33.067792,18.49688 1.0001,38.65329 v 42.75194"
+     id="batiment"/>
+</svg>

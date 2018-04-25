@@ -106,7 +106,7 @@ class ModbusClient extends BaseModbusClient implements InterfaceModbusTcpIpClien
             throw new CloseConnectionError();
         }
         return $this;
-    }
+    }g
 
     /**
      * @param string $data

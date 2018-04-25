@@ -31,10 +31,10 @@ abstract class ModbusClient implements InterfaceModbusClient
      * @param int $meiType
      * @param int $deviceIdCode
      * @param int $objectId
-     * @return InterfaceModbusIdentifierResponse
+     * @return InterfaceModbusResponse
      * @throws ReadUntilConnected
      */
-    public function  readDeviceIdentification(int $slave, int $meiType, int $deviceIdCode, int $objectId = 0x01): InterfaceModbusIdentifierResponse
+    public function  readDeviceIdentification(int $slave, int $meiType, int $deviceIdCode, int $objectId = 0x01): InterfaceModbusResponse
     {
         if (!$this->connected)
             throw new ReadUntilConnected();

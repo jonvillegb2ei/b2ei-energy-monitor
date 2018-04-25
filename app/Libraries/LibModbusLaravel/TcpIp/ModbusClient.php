@@ -116,13 +116,12 @@ class ModbusClient extends BaseModbusClient implements InterfaceModbusTcpIpClien
     public function client_write(string $data): InterfaceModbusClient
     {
         try {
-
-
             Log::debug('Sending data : ');
             Log::debug(collect(str_split($data))->map(function($char) {
                 return str_replace(' ','0', sprintf("0x%2X",ord($char)));
             }));
-
+        } catch (\Exception $error) { }
+        try {
             socket_write($this->client, $data, strlen($data));
         } catch(\Exception $error) {
             throw new ConnectionWriteError();
@@ -139,18 +138,16 @@ class ModbusClient extends BaseModbusClient implements InterfaceModbusTcpIpClien
     {
         try {
             $data = socket_read($this->client, $size);
-
-
-            Log::debug('Receive data : ');
-            Log::debug(collect(str_split($data))->map(function($char) {
-                return str_replace(' ','0', sprintf("0x%2X",ord($char)));
-            }));
-
-
-            return $data;
         } catch(\Exception $error) {
             throw new ConnectionReadError();
         }
+        try {
+            Log::debug('Receive data : ');
+            Log::debug(collect(str_split($data))->map(function ($char) {
+                return str_replace(' ', '0', sprintf("0x%2X", ord($char)));
+            }));
+        } catch (\Exception $error) { }
+        return $data;
     }
 
 

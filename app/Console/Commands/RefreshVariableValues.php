@@ -2,11 +2,15 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\RefreshEquipmentJob;
 use App\Models\Equipment;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class RefreshVariableValues extends Command
 {
+    use DispatchesJobs;
+
     /**
      * The name and signature of the console command.
      *
@@ -40,7 +44,7 @@ class RefreshVariableValues extends Command
         Equipment::get()->each(function ($equipment) {
             try {
                 $this->line(sprintf('Refreshing equipment %s (%s)',$equipment->id,$equipment->name));
-                $equipment->refresh();
+                $this->dispatch(new RefreshEquipmentJob($equipment));
             } catch (\Exception $error) {
                 return null;
             }

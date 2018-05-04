@@ -16,6 +16,9 @@
         <div class="col-md-12" style="padding-bottom: 10px">
             <b>{{__('System')}}</b>
         </div>
+        <div class="col-md-12" style="padding-bottom: 10px">
+            {{trans('settings.free-disk-space')}}: {{ round(disk_free_space("/") / (1024 * 1024 * 1024),2) }} Go / {{ round(disk_total_space("/") / (1024 * 1024 * 1024),2) }} Go
+        </div>
         <div class="col-md-6 text-center">
             <form action="{{route('settings.shutdown')}}" method="POST" role="form">
                 @csrf

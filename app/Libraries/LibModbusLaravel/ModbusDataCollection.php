@@ -48,8 +48,6 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
 
     private function combineBytes(Collection $data)
     {
-//        for($i=0;$i<4;$i++) if (!isset($data[$i])) $data[$i] = 0;
-//        return ((0xFF & $data[1]) << 24) | ((0xFF & $data[0]) << 16) | ((0xFF & $data[3]) << 8) | ((0xFF & $data[2]) << 0);
         $return = 0;
         for($i=0;$i<$data->count();$i+=2) {
             $return = $return | ((0xFF & $data[$i + 1]) << (8 * ($data->count() - 1 - $i)));
@@ -58,14 +56,34 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
         return $return;
     }
 
-    private function toUnsignedInt($value)
+    private function toUnsignedInt64($value)
+    {
+        return (0x800000000000 & $value) != 0 ? (int)(((int) (0x7FFFFFFFFFFF & $value)) + 0x800000000000) : (int) (0x7FFFFFFF & $value);
+    }
+
+    private function toSignedInt64($value)
+    {
+        return (0x80000000 & $value) != 0 ? (int)(-(0x7FFFFFFF & ~$value)-1) : (int)(0x7FFFFFFF & $value);
+    }
+
+    private function toUnsignedInt32($value)
     {
         return (0x80000000 & $value) != 0 ? (int)(((int) (0x7FFFFFFF & $value)) + 2147483648) : (int) (0x7FFFFFFF & $value);
     }
 
-    private function toSignedInt($value)
+    private function toSignedInt32($value)
     {
         return (0x80000000 & $value) != 0 ? (int)(-(0x7FFFFFFF & ~$value)-1) : (int)(0x7FFFFFFF & $value);
+    }
+
+    private function toUnsignedInt16($value)
+    {
+        return (0x8000 & $value) != 0 ? (int)(((int) (0x7FFF & $value)) + 32768) : (int) (0x7FFF & $value);
+    }
+
+    private function toSignedInt16($value)
+    {
+        return (0x8000 & $value) != 0 ? (int)(-(0x7FFF & ~$value)-1) : (int)(0x7FFF & $value);
     }
 
 
@@ -96,7 +114,7 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
     {
         $data = $this->getBytes($offset, self::BIT_16);
         $value = $this->combineBytes($data);
-        return $this->toUnsignedInt($value);
+        return $this->toUnsignedInt16($value);
     }
 
     /**
@@ -107,7 +125,7 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
     {
         $data = $this->getBytes($offset, self::BIT_32);
         $value = $this->combineBytes($data);
-        return $this->toUnsignedInt($value);
+        return $this->toUnsignedInt32($value);
     }
 
     /**
@@ -118,7 +136,7 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
     {
         $data = $this->getBytes($offset, self::BIT_16);
         $value = $this->combineBytes($data);
-        return $this->toSignedInt($value);
+        return $this->toSignedInt16($value);
     }
 
     /**
@@ -129,7 +147,7 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
     {
         $data = $this->getBytes($offset, self::BIT_32);
         $value = $this->combineBytes($data);
-        return $this->toSignedInt($value);
+        return $this->toSignedInt32($value);
     }
 
     /**
@@ -140,7 +158,7 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
     {
         $data = $this->getBytes($offset, self::BIT_64);
         $value = $this->combineBytes($data);
-        return $this->toUnsignedInt($value);
+        return $this->toUnsignedInt32($value);
     }
 
     /**
@@ -151,7 +169,7 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
     {
         $data = $this->getBytes($offset, self::BIT_64);
         $value = $this->combineBytes($data);
-        return $this->toSignedInt($value);
+        return $this->toSignedInt32($value);
     }
 
 

@@ -55,12 +55,12 @@ class TestCommand extends Command
 //        $response = $client -> readHoldingRegisters(10, 12000, 64);
 //        $endianness = false;
 
-        $equipment = Equipment::where('id', 5)->first();
+        $equipment = Equipment::where('id', 11)->first();
 
         dd($equipment->test());
 
 
-        $states = $response->getData()->withEndianness($endianness)->readBitmap(1, ModbusDataCollection::BIT_16);
+//        $states = $response->getData()->withEndianness($endianness)->readBitmap(1, ModbusDataCollection::BIT_16);
 //        dd($states);
         printf("\nstates: %s %s", $states[0] ? 'ON' : 'OFF', $states[1] ? 'FAULT' : 'OK');
 //        $current = $response->getData()->withEndianness($endianness)->readUint16(28);

@@ -118,7 +118,7 @@ class ModbusDataCollection extends Collection implements ModbusDataCollectionInt
     {
         $data = $this->getBytes($offset, self::BIT_16);
         $value = $this->combineBytes($data);
-        return $this->toUnsignedInt($value);
+        return $this->toSignedInt($value);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Exceptions\RefreshEquipmentVariablesException;
 use App\Models\Equipment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -29,11 +30,24 @@ class RefreshEquipmentJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
      * @return void
+     * @throws RefreshEquipmentVariablesException
      */
     public function handle()
     {
-        $this->equipment->refresh();
+        if (!$this->equipment->refresh())
+            throw (new RefreshEquipmentVariablesException());
     }
+
+    /**
+     * The job failed to process.
+     *
+     * @param  \Exception  $exception
+     * @return void
+     */
+    public function failed(\Exception $exception)
+    {
+
+    }
+
 }

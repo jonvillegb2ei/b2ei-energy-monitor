@@ -13,7 +13,7 @@ return [
     */
     // trans('settings.dhcp-enable')
 
-    'free-disk-space' => 'Free disk space',
+    'free-disk-space' => 'free disk space',
     'ip-config' => [
         'title' => 'IP configuration',
         'actual' => 'Actual',

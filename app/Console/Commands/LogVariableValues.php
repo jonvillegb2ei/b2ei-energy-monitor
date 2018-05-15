@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\LogVariablesValues;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -37,6 +38,6 @@ class LogVariableValues extends Command
      */
     public function handle()
     {
-
+        LogVariablesValues::dispatch();
     }
 }

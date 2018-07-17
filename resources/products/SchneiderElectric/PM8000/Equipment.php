@@ -105,7 +105,8 @@ class Equipment extends EquipmentModel implements EquipmentInterface
             ->get();
     }
 
-    public function getCharts() {
+        public function getCharts() {
+
         return [
             'voltage' => [
                 'id' => 'voltage',
@@ -130,10 +131,10 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                         $end = clone $start;
                         $end = $end->addHours(24);
                     }
-                    $voltage12Data = $this->variables()->whereName('voltage12')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    $voltage23Data = $this->variables()->whereName('voltage23')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    $voltage31Data = $this->variables()->whereName('voltage31')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    return ['L12' => $voltage12Data->pluck('value'), 'L23' => $voltage23Data->pluck('value'), 'L31' => $voltage31Data->pluck('value') ];
+                    $voltage12Data = $this->variables()->whereName('voltage12')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $voltage23Data = $this->variables()->whereName('voltage23')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $voltage31Data = $this->variables()->whereName('voltage31')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    return [$voltage12Data, $voltage23Data, $voltage31Data];
                 }
             ],
             'current' => [
@@ -150,20 +151,19 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                     $this->variables()->whereName('current1')->first()->printable_name,
                     $this->variables()->whereName('current2')->first()->printable_name,
                     $this->variables()->whereName('current3')->first()->printable_name,
-                    $this->variables()->whereName('currentN')->first()->printable_name,
                 ],
                 'data' => function(Carbon $start = null, Carbon $end = null) {
                     if (is_null($start))
-                        [$start,$end] = [Carbon::now()->subHours(24), Carbon::now()];
+                        [$start, $end] = [Carbon::now()->subHours(24), Carbon::now()];
                     if (is_null($end)) {
+                        $start = $start -> startOfDay();
                         $end = clone $start;
-                        $end = $end -> addHours(24);
+                        $end = $end->addHours(24);
                     }
-                    $current1Data = $this->variables()->whereName('current1')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    $current2Data = $this->variables()->whereName('current2')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    $current3Data = $this->variables()->whereName('current3')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    $currentNData = $this->variables()->whereName('currentN')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    return ['L1' => $current1Data->pluck('value'), 'L2' => $current2Data->pluck('value'), 'L3' => $current3Data->pluck('value'), 'N' => $currentNData->pluck('value') ];
+                    $current1Data = $this->variables()->whereName('current1')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $current2Data = $this->variables()->whereName('current2')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $current3Data = $this->variables()->whereName('current3')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    return [$current1Data, $current2Data, $current3Data];
                 }
             ],
             'active_power' => [
@@ -190,16 +190,15 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                         $end = clone $start;
                         $end = $end->addHours(24);
                     }
-                    $activePowerData = $this->variables()->whereName('active_power')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    $activePowerData1 = $this->variables()->whereName('active_power1')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    $activePowerData2 = $this->variables()->whereName('active_power2')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    $activePowerData3 = $this->variables()->whereName('active_power3')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get();
-                    return ['Total' => $activePowerData->pluck('value'), 'L1' => $activePowerData1->pluck('value'), 'L2' => $activePowerData2->pluck('value'), 'L3' => $activePowerData3->pluck('value') ];
+                    $activePowerData = $this->variables()->whereName('active_power')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $activePowerData1 = $this->variables()->whereName('active_power1')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $activePowerData2 = $this->variables()->whereName('active_power2')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    $activePowerData3 = $this->variables()->whereName('active_power3')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
+                    return [$activePowerData, $activePowerData1, $activePowerData2, $activePowerData3 ];
                 }
             ],
         ];
     }
-
 
     /**
      * Execute the test command.

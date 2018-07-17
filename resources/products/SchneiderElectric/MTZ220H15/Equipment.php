@@ -217,39 +217,7 @@ class Equipment extends EquipmentModel implements EquipmentInterface
                     $activePowerData3 = $this->variables()->whereName('active_power3')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
                     return [$activePowerData, $activePowerData1, $activePowerData2, $activePowerData3 ];
                 }
-            ],
-
-            'power_factor' => [
-                'id' => 'power_factor',
-                'type' =>'line',
-                'title' => 'Power factor',
-                'label' =>'Pi',
-                'options' => [
-                    'responsive' => true,
-                    'legend' => [ 'display' => true, 'position' => 'top', ],
-                    'scales' => [ 'xAxes' => [ [ 'type' => 'time', 'time' => [ 'displayFormats' => [ 'quarter' => 'MMM YYYY', ], ], ],], ],
-                ],
-                'series' => [
-                    $this->variables()->whereName('power_factor')->first()->printable_name,
-                    $this->variables()->whereName('power_factor1')->first()->printable_name,
-                    $this->variables()->whereName('power_factor2')->first()->printable_name,
-                    $this->variables()->whereName('power_factor3')->first()->printable_name,
-                ],
-                'data' => function(Carbon $start = null, Carbon $end = null) {
-                    if (is_null($start))
-                        [$start, $end] = [Carbon::now()->subHours(24), Carbon::now()];
-                    if (is_null($end)) {
-                        $start = $start -> startOfDay();
-                        $end = clone $start;
-                        $end = $end->addHours(24);
-                    }
-                    $powerFactor = $this->variables()->whereName('power_factor')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
-                    $powerFactor1 = $this->variables()->whereName('power_factor1')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
-                    $powerFactor2 = $this->variables()->whereName('power_factor2')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
-                    $powerFactor3 = $this->variables()->whereName('power_factor3')->first()->logs()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->orderBy('created_at','ASC')->get()->map(function($log) {return [ 'x' => $log->created_at->format("Y-m-d H:i:s"), 'y' => $log->value ]; });
-                    return [$powerFactor, $powerFactor1, $powerFactor2, $powerFactor3 ];
-                }
-            ],
+            ]
         ];
     }
 

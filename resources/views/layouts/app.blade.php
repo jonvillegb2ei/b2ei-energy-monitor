@@ -14,7 +14,7 @@
     <![endif]-->
     @yield('head')
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 <div class="wrapper">
     @include('layouts.components.header')
     @include('layouts.components.sidebar')

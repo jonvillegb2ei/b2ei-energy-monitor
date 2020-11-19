@@ -21,6 +21,8 @@ import "angular-file-saver";
 window.viewport = require('responsive-toolkit');
 
 
+require('admin-lte');
+
 require('chart.js');
 require('angular-chart.js');
 

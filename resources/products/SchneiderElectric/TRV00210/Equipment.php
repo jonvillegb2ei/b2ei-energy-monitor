@@ -91,10 +91,10 @@ class Equipment extends EquipmentModel implements EquipmentInterface
             $this->updateVariable('active_power2', $response->getData()->withEndianness($endianness)->readUint16(40) / 10);
             $this->updateVariable('active_power3', $response->getData()->withEndianness($endianness)->readUint16(41) / 10);
             $this->updateVariable('active_power', $response->getData()->withEndianness($endianness)->readUint16(42) / 10);
-            $this->updateVariable('reactive_power1', $response->getData()->withEndianness($endianness)->readUint16(43) / 10);
-            $this->updateVariable('reactive_power2', $response->getData()->withEndianness($endianness)->readUint16(44) / 10);
-            $this->updateVariable('reactive_power3', $response->getData()->withEndianness($endianness)->readUint16(45) / 10);
-            $this->updateVariable('reactive_power', $response->getData()->withEndianness($endianness)->readUint16(46) / 10);
+            $this->updateVariable('reactive_power1', $response->getData()->withEndianness($endianness)->readInt16(43) / 10);
+            $this->updateVariable('reactive_power2', $response->getData()->withEndianness($endianness)->readInt16(44) / 10);
+            $this->updateVariable('reactive_power3', $response->getData()->withEndianness($endianness)->readInt16(45) / 10);
+            $this->updateVariable('reactive_power', $response->getData()->withEndianness($endianness)->readInt16(46) / 10);
             $this->updateVariable('apparent_power1', $response->getData()->withEndianness($endianness)->readUint16(47) / 10);
             $this->updateVariable('apparent_power2', $response->getData()->withEndianness($endianness)->readUint16(48) / 10);
             $this->updateVariable('apparent_power3', $response->getData()->withEndianness($endianness)->readUint16(49) / 10);
@@ -307,14 +307,17 @@ class Equipment extends EquipmentModel implements EquipmentInterface
         $output .= sprintf("\nactive power L3: %.2f kW", $power / 10);
         $power = $response->getData()->withEndianness($endianness)->readUint16(42);
         $output .= sprintf("\nactive power total: %.2f kW", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readUint16(43);
+
+        $power = $response->getData()->withEndianness($endianness)->readInt16(43);
         $output .= sprintf("\nreactive power L1: %.2f kVAR", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readUint16(44);
+        $power = $response->getData()->withEndianness($endianness)->readInt16(44);
         $output .= sprintf("\nreactive power L2: %.2f kVAR", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readUint16(45);
+        $power = $response->getData()->withEndianness($endianness)->readInt16(45);
         $output .= sprintf("\nreactive power L3: %.2f kVAR", $power / 10);
-        $power = $response->getData()->withEndianness($endianness)->readUint16(46);
+        $power = $response->getData()->withEndianness($endianness)->readInt16(46);
         $output .= sprintf("\nreactive power total: %.2f kVAR", $power / 10);
+
+
         $power = $response->getData()->withEndianness($endianness)->readUint16(47);
         $output .= sprintf("\napparent power L1: %.2f kVA", $power / 10);
         $power = $response->getData()->withEndianness($endianness)->readUint16(48);
@@ -323,6 +326,8 @@ class Equipment extends EquipmentModel implements EquipmentInterface
         $output .= sprintf("\napparent power L3: %.2f kVA", $power / 10);
         $power = $response->getData()->withEndianness($endianness)->readUint16(50);
         $output .= sprintf("\napparent power total: %.2f kVA", $power / 10);
+
+
         $power = $response->getData()->withEndianness($endianness)->readInt32(51);
         $output .= sprintf("\nactive energy: %.2f kWh", $power);
         $power = $response->getData()->withEndianness($endianness)->readInt32(53);
